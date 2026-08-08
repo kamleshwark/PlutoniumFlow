@@ -1,0 +1,6 @@
+<nav>
+  <div class="navbar-wrapper">
+    <app-nav-logo [navCollapsed]="navCollapsed" (NavCollapse)="navCollapse()" (NavClosed)="navClosed()" class="navbar-brand header-logo"></app-nav-logo>
+    <app-nav-content (NavCollapsedMob)="navCollapseMob()" class="scroll-div w-100 nav-content"></app-nav-content>
+  </div>
+</nav>

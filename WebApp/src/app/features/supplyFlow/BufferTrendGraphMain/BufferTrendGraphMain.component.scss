@@ -1,0 +1,15 @@
+@import './../../../../scss/variables';
+
+.btg-main {
+    .ant-switch {
+        background: $primary-color;
+    }
+
+    .ant-switch-checked {
+        background: lighten($color: $primary-color, $amount: 15);
+    }
+
+    .ant-switch-small .ant-switch-inner {
+        font-size: 10px;
+    }
+}

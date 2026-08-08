@@ -1,0 +1,22 @@
+<div style="height: 100%;" >
+  @if (!commonFunctions.isStringNullOrEmpty(title)) {
+  <div class="text-center mt-2"><h5 class="mb-0">{{title}}</h5></div>
+  }
+  <div class="text-center m-1"><h6 style="color: grey;font-size: small;">{{subtitle}}</h6></div>
+  <div style="height: calc(100% - 70px);border-bottom: 1px solid lightgray">
+    <table class="w-100" style="height: 100%;">
+      @for (rows of [].constructor(MAX_HEIGHT); track $index;let i=$index) {
+      <tr>
+        @for (col of [].constructor(barCount); track $index;let j=$index) {
+        <td>
+          @if(bars[i][j]) {
+            <div class="skeleton"></div>
+          }
+        </td>
+        }
+      </tr>
+      }
+    </table>
+  </div>
+  
+</div>

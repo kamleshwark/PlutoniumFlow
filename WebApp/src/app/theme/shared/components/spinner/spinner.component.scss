@@ -1,0 +1,42 @@
+@import '../spinner/spinkit-css/sk-wave.scss';
+@import '../spinner/spinkit-css/sk-line-material.scss';
+@import '../spinner//spinkit-css/sk-cube-grid.scss';
+@import '../spinner//spinkit-css/sk-folding-cube.scss';
+@import '../spinner//spinkit-css/sk-spinning-square.scss';
+@import '../../../../../scss/variables';
+
+#http-loader {
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 9999;  
+}
+
+
+.loader-bg {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  filter: alpha(opacity=70);
+  opacity: 0.5;
+  background-color: black;
+}
+
+.colored-parent,
+.colored > div {
+  background-color: #333;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spinnerx {
+  background: $primary-color;
+}

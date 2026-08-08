@@ -1,0 +1,22 @@
+<Div class="row">
+  <nz-empty [nzNotFoundContent]="contentTpl" class="mt-1">
+    <ng-template #contentTpl>
+      <span>
+        {{noRowsText}}
+        @if (showImportButton) {
+        <div>
+          <button #importDataButton class="btn btn-sm btn-outline-info  import-data-button ">{{importBtnCaption}}
+            @if (showImportBtnIcon) {
+            <span class="fa-layers fa-fw ms-2">
+              <fa-icon [icon]="fileIcon" transform="grow-6"></fa-icon> <!-- Background Icon -->
+              <fa-icon [icon]="gridIcon" class="fa-stack-1x" transform="shrink-4 left-1 down-1"></fa-icon>
+              <fa-icon [icon]="downArrowIcon" class="fa-stack-1x" transform="shrink-2 left-16 down-4 rotate--180"></fa-icon>
+            </span>
+            }
+          </button>
+        </div>
+        }
+      </span>
+    </ng-template>
+  </nz-empty>
+</Div>

@@ -1,0 +1,11 @@
+<div class="user-mgmt-main-container">
+  <div class="user-mgmt-grid-container">
+    <ag-grid-angular style="height: calc(100%);" [rowData]="users" [gridOptions]="gridOptions"
+    class="col-12 default-grid" [ngClass]="agGridTheme" (gridReady)="onGridReady($event)"
+    overlayNoRowsTemplate="No users added yet." [getRowClass]="getRowClass" />
+  </div>
+  <div class="mt-1">
+    <button class="btn btn-sm btn-outline-info ms-1 m-0 small-button" (click)="onNewUserClick()">
+      New User</button>
+  </div>
+</div>

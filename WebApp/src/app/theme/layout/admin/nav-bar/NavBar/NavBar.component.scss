@@ -1,0 +1,45 @@
+@import './../../../../../../scss/variables';
+
+.gc-navbar-left {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+    display: inline-block;
+    z-index: 2;
+
+    >li {
+        display: inline-block;
+        padding: 0 12px;
+
+        &:first-child {
+            padding-left: 30px;
+        }
+    }
+}
+
+.page-title {
+    font-weight: 400;
+    font-size: 18px;
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+
+    &.closed-menu {
+        left: 0;
+        width: 100%;
+    }
+
+    &.collapsed-menu {
+        left: $Menu-collapsed-width;
+        width: calc(100% - $Menu-collapsed-width);
+    }
+
+    &.expanded-menu {
+        left: $Menu-width;
+        width: calc(100% - $Menu-width);
+    }
+}
+
+.right-pannel {
+    position: absolute;
+    right: 30px;
+}

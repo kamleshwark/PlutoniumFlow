@@ -1,0 +1,44 @@
+    [
+    {
+        "id": "dashboard",
+        "roles": [
+            "Admin",
+            "FKManager",
+            "TopManagement",
+            "ProjectManager"
+        ]
+    },
+    {
+        "id": "ccpm-dashboard",
+        "roles": [
+            "Admin",
+            "TopManagement",
+            "ProjectManager"
+        ]
+    },
+    {
+        "id": "bpr",
+        "roles": [
+        ]
+    },
+    {
+        "id": "btg",
+        "roles": [
+        ]
+    },
+    {
+        "id": "misc",
+        "title": "MISC",
+        "roles": [
+            "Admin"
+        ]
+    },
+    {
+        "id": "run",
+        "roles": ["Admin"]
+    },
+    {
+        "id": "userMgmt",
+        "roles": ["Admin"]
+    }
+]

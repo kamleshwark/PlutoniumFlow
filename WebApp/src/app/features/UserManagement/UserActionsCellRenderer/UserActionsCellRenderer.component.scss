@@ -1,0 +1,9 @@
+@import './../../../../scss/variables';
+
+.actionButtonGroup {
+    opacity: 0.4;
+
+    &:hover {
+        opacity: 1;
+    }
+}

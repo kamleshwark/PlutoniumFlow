@@ -1,0 +1,45 @@
+<div class="text-center">
+  <button class="btn btn-sm btn-info" (click)="onTriggerRunClick()"
+  [disabled]="runInProgress">Trigger Run</button>
+  <div>
+    <h6>Run Status</h6>
+    @if (runInProgress) {
+      <span>Refreshing</span>
+      @if (0 < refreshingIn) {
+        <span> in {{refreshingIn}} sec</span>
+      }
+    }
+    @if (commonFunctions.isValid(bgJob)) {
+      <div class="col-md-6 offset-md-3 col-xs-12 ">
+        <table>
+          <tr>
+            <td>Id</td>
+            <td>{{bgJob.Id}}</td>
+          </tr>
+          <tr>
+            <td>Code</td>
+            <td>{{bgJob.Code}}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>{{bgJob.getStatus()}}</td>
+          </tr>
+          <tr>
+            <td>Created On</td>
+            <td>{{getTimestamp(bgJob.CreatedOn)}}</td>
+          </tr>
+          <tr>
+            <td>Started On</td>
+            <td>{{getTimestamp(bgJob.StartedOn)}}</td>
+          </tr>
+          <tr>
+            <td>Last Updated On</td>
+            <td>{{getTimestamp(bgJob.LastUpdatedOn)}}</td>
+          </tr>
+        </table>
+      </div>
+    } @else {
+      <span>Fetching status...</span>
+    }
+  </div>
+</div>

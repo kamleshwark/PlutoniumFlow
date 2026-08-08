@@ -1,0 +1,12 @@
+<div class="row-loading-skeleton">
+  @for (item of rows; track $index) {
+    <nz-space nzSize="middle" class="nz-space mt-0">
+      <nz-skeleton-element 
+        nzType="input"
+        [nzActive]="true"
+        nzSize="small"
+        class="fk-item-skeleton mt-1"
+      ></nz-skeleton-element>
+    </nz-space> 
+    }
+</div>

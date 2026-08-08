@@ -1,0 +1,20 @@
+<div>
+  <a [routerLink]="['/home']" class="b-brand">
+    <div class="b-bg">
+      <!-- <i class="feather icon-grid"></i> -->
+      <img src="assets/images/logo-white.png" alt="images" width="40" height="40" />
+    </div>
+    <span class="b-title">{{title}}</span>
+  </a>
+  <a href="javascript:" (click)="navClosed()" class="close-menu">
+    <fa-icon [icon]="closeIcon" size="lg"></fa-icon>
+  </a>
+
+  <a href="javascript:" class="mobile-menu" [ngClass]="{ on: !navCollapsed }" id="mobile-collapse" (click)="navCollapse()">
+    @if(navCollapsed) {
+    <fa-icon [icon]="maximizeIcon" class="fa-rotate-by" style="--fa-rotate-angle: 45deg;"></fa-icon>
+    } @else {
+    <fa-icon [icon]="minimizeIcon" ></fa-icon>
+    }
+  </a>
+</div>

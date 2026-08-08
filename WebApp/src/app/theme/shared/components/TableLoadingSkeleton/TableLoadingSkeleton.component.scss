@@ -1,0 +1,81 @@
+
+.table-loading-skeleton {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Skeleton loader */
+.skeleton {
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(
+      to right,
+      #f0f0f0 0%,
+      #e0e0e0 50%,
+      #f0f0f0 100%
+    ); /* Gradient effect */
+    background-size: 200% 100%;
+    animation: skeleton-loading 1s infinite; /* Infinite shimmering animation */
+  }
+
+  .header-skeleton {
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(
+      to right,
+      #d0d0d0 0%,
+      #e0e0e0 50%,
+      #d0d0d0 100%
+    ); /* Gradient effect */
+    background-size: 200% 100%;
+    animation: skeleton-loading 1s infinite; /* Infinite shimmering animation */
+  }
+
+  
+  /* Keyframes for shimmering effect */
+  @keyframes skeleton-loading {
+      0% {
+          background-position: 200% 0;
+      }
+
+      10% {
+          background-position: 160% 0;
+      }
+
+      20% {
+          background-position: 120% 0;
+      }
+
+      30% {
+          background-position: 80% 0;
+      }
+
+      40% {
+          background-position: 40% 0;
+      }
+
+      50% {
+          background-position: 0% 0;
+      }
+
+      60% {
+          background-position: -40% 0;
+      }
+
+      70% {
+          background-position: -80% 0;
+      }
+
+      80% {
+          background-position: -120% 0;
+      }
+
+      90% {
+          background-position: -160% 0;
+      }
+
+      100% {
+          background-position: -200% 0;
+      }
+  }
+  

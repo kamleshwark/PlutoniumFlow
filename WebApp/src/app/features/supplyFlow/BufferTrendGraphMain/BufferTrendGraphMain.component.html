@@ -1,0 +1,6 @@
+<div class="btg-main">
+   <nz-switch [(ngModel)]="isPercent" (ngModelChange)="countTypeChange($event)" 
+   nzCheckedChildren="Percent" nzUnCheckedChildren="Count" nzSize="small" />
+  <app-BufferTrendGraphCore [title]="techBTGTitle" [btgData]="techBTG"  #techBTGComponent></app-BufferTrendGraphCore>
+  <app-BufferTrendGraphCore [title]="ecoBTGTitle" [btgData]="ecoBTG"  #ecoBTGComponent></app-BufferTrendGraphCore>
+</div>

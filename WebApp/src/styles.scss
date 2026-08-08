@@ -1,0 +1,443 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'scss/variables';
+
+/* fonts-icon */
+@import 'scss/fonts/fontawesome/scss/fontawesome';
+@import 'scss/fonts/feather/iconfont';
+
+@import 'scss/general';
+@import 'scss/generic';
+@import 'scss/mixins/function';
+
+/* important element */
+@import 'scss/menu/menu-lite';
+
+/* basic elements */
+@import 'scss/theme-elements/theme-elements';
+
+/* third party modules style*/
+@import 'scss/plugins/plugins';
+
+@import 'scss/custom';
+
+/* Core Data Grid CSS */
+@import 'ag-grid-community/styles/ag-grid.css';
+/* Quartz Theme Specific CSS */
+@import 'ag-grid-community/styles/ag-theme-balham.css';
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+
+
+.info-header {
+    color: grey;
+    font-size: x-small;
+}
+
+.info-value {
+    color: black;
+    font-size: smaller;
+}
+
+.info-value-lighter {
+    color: grey;
+    font-size: smaller;
+}
+
+
+
+.table-loading-container {
+    background: $white;
+}
+
+.vertical-grid-header {
+    writing-mode: tb-rl;
+    transform: rotate(-180deg);
+}
+
+.header-center-aligned {
+    text-align: center;
+}
+
+.modified-cell {
+    color: orange;
+}
+
+.erroneous-cell {
+    background: lighten($color: red, $amount: 10) !important;
+    color: white;
+}
+
+.small-tag {
+    height: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+$checkbox-base-color: darken($color: red, $amount: 30);
+
+$menu-color-btn-base-color: lighten($menu-dark-background, 20);
+
+.btn-menu-color {
+    background: $menu-color-btn-base-color;
+    color: $white;
+
+    &:hover {
+        background: darken($color: $menu-color-btn-base-color, $amount: 10);
+        color: $white;
+    }
+}
+
+
+.btn-outline-menu-color {
+    color: $menu-dark-background;
+    border: 1px solid $menu-color-btn-base-color;
+
+    &:hover {
+        background: $menu-color-btn-base-color;
+        color: $white;
+    }
+}
+
+.filterButton {
+    color: $menu-color-btn-base-color;
+
+    &:hover {
+        color: darken($color: $menu-color-btn-base-color, $amount: 10);
+    }
+}
+
+.p-component,
+.gms-autocomplete {
+
+    .p-button {
+        height: 30px;
+        width: 30px;
+        background: $white;
+        border-color: lightgray;
+
+        &:hover {
+            border-color: blue;
+        }
+    }
+
+    button {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .p-autocomplete.p-component.p-inputwrapper.p-autocomplete-dd {
+        width: inherit;
+    }
+
+    .p-autocomplete .p-inputtext {
+        height: 30px;
+        padding: 4px;
+        font-size: 14px;
+    }
+
+    .p-autocomplete-panel {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .p-autocomplete-items .p-autocomplete-item {
+        height: 30px;
+        line-height: 30px;
+        padding-top: 0px;
+        padding-left: 0.5rem;
+        text-align: start;
+        font-size: small;
+    }
+
+    .p-autocomplete-panel ol,
+    .p-autocomplete-panel ul {
+        padding-left: 0px;
+    }
+
+    .p-autocomplete-panel ul {
+        margin-bottom: 0px;
+    }
+}
+
+
+.small-button {
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.small-nz-select {
+    height: 20px !important;
+    line-height: 20px !important;
+    font-size: 12px;
+    vertical-align: top;
+
+    .ant-select-selector {
+        height: 20px !important;
+        min-height: 20px !important;
+        line-height: 18px !important;
+        padding: 0 4px !important;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.small-nz-select.ant-select-multiple {
+    .ant-select-selection-item {
+        height: 18px;
+        margin-top: -8px;
+    }
+}
+
+@keyframes fadeInSlide {
+    from {
+        transform: translateX(200px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+$default-grid-base-color: rgb(250, 250, 250);
+
+.default-grid {
+    .ag-cell {
+        border-right: 0.2px solid #dcdcdc;
+        box-sizing: border-box;
+    }
+
+    .ag-row-even {
+        background-color: darken($color: $default-grid-base-color, $amount: 1);
+    }
+
+    .ag-text-field-input,
+    .ag-number-field-input {
+        color: black !important;
+    }
+}
+
+.compact-date-picker {
+    .p-datepicker {
+        min-width: 275px;
+    }
+
+    .p-datepicker table td>span {
+        font-size: 12px;
+        width: 1.0rem;
+        height: 1.0rem;
+    }
+
+    .p-datepicker table {
+        font-size: 12px;
+        margin: 0.5rem 0;
+    }
+
+    .p-datepicker:not(.p-datepicker-inline) {
+        top: 30px !important;
+    }
+
+    .p-disabled,
+    .p-component:disabled {
+        font-size: 0.8em !important;
+    }
+
+    .p-datepicker table td.p-datepicker-today>span {
+        font-size: 0.8em !important;
+    }
+}
+
+
+
+/* Skeleton loader */
+.box-skeleton {
+    height: 300px;
+    background: linear-gradient(to right,
+            #f0f0f0 0%,
+            #e0e0e0 50%,
+            #f0f0f0 100%);
+    /* Gradient effect */
+    background-size: 200% 100%;
+    animation: box-skeleton-loading 1s infinite;
+    /* Infinite shimmering animation */
+}
+
+/* Keyframes for shimmering effect */
+@keyframes box-skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    10% {
+        background-position: 160% 0;
+    }
+
+    20% {
+        background-position: 120% 0;
+    }
+
+    30% {
+        background-position: 80% 0;
+    }
+
+    40% {
+        background-position: 40% 0;
+    }
+
+    50% {
+        background-position: 0% 0;
+    }
+
+    60% {
+        background-position: -40% 0;
+    }
+
+    70% {
+        background-position: -80% 0;
+    }
+
+    80% {
+        background-position: -120% 0;
+    }
+
+    90% {
+        background-position: -160% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.flip-card {
+    width: 100%;
+    perspective: 1000px;
+    /* Creates 3D effect */
+}
+
+.flip-card-inner {
+    width: 100%;
+    height: calc(100% - 5px);
+    position: relative;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    /* Hides the back when not flipped */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+
+
+.status-color-dot {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-color-block {
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+    border: 1px solid black;
+}
+
+$bpr-grid-base-color: lighten($primary-color, 50);
+
+.bpr-grid {
+    .ag-cell {
+        border-bottom: 0.2px solid #dcdcdc;
+        border-right: 0.2px solid #dcdcdc;
+        box-sizing: border-box;
+    }
+
+    .ag-row-even {
+        background-color: lighten($color: $bpr-grid-base-color, $amount: 4);
+    }
+
+    .ag-row-odd {
+        background-color: lighten($color: $bpr-grid-base-color, $amount: 8);
+    }
+
+    div.ag-row-hover:not(.ag-row-group) div {
+        background: $bpr-grid-base-color;
+    }
+
+    .ag-header {
+        background-color: darken($color: $bpr-grid-base-color, $amount: 20);
+        color: black;
+    }
+
+    .ag-header-cell {
+        border-right: 1px solid darken($color: $bpr-grid-base-color, $amount: 20);
+    }
+
+    .ag-text-field-input,
+    .ag-number-field-input {
+        color: black !important;
+    }
+
+    .cell-color-black {
+        background: black !important;
+        color: white;
+    }
+
+    .cell-color-red {
+        background: red !important;
+    }
+
+    .cell-color-yellow {
+        background: yellow !important;
+    }
+
+    .cell-color-green {
+        background: green !important;
+    }
+
+    .cell-color-white {
+        background: white !important;
+    }
+}
+
+.btg-tooltip-wrapper {
+    padding: 10px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+.btg-tooltip-table-wrapper {
+    display: flex;
+    justify-content: center;
+
+    .info-header {
+        text-align: right;
+        padding-right: 10px;
+    }
+}

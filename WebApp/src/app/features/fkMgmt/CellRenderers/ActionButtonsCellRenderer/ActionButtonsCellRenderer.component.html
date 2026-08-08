@@ -1,0 +1,24 @@
+<div class="actionButtonGroup">
+  @if (isDataImportActive) {
+  <a class="actionButton" (click)="onDataImportClick()" href="javascript:"><fa-icon
+      [icon]="gateIcon"></fa-icon></a>
+  &nbsp;
+  }
+
+  @if (isDeleteActive && rowData.showDelete()) {
+    <a class="actionButton" href="javascript:" 
+      nz-popconfirm nzPopconfirmTitle="Are you sure to delete?" nzOkText="Delete"
+      nzOkType="danger" nzCancelText="No" (nzOnConfirm)="onDeleteClick()"
+      [nzCondition]="!deleteConfirmationRequired">
+      <fa-icon [icon]="deleteIcon"
+        style="color: red;">
+      </fa-icon>
+    </a>&nbsp;
+    }
+  
+    @if (isPlanningActive) {
+      <a class="actionButton" (click)="onPlanningClick()" href="javascript:">
+        <fa-icon [icon]="planningIcon"></fa-icon></a>
+      &nbsp;
+    }
+</div>

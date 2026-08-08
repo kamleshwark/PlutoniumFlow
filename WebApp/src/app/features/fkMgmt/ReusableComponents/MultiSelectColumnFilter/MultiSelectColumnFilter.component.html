@@ -1,0 +1,10 @@
+<div class="ag-filter-body">
+  @for (status of filterOptions; track $index) {
+    <div>
+      <label class="ag-checkbox-label">
+        <input type="checkbox" [(ngModel)]="status.isSelected" (change)="onSelectionChange()"/>
+        {{ status.DisplayText }}
+      </label>
+    </div>
+  }
+</div>

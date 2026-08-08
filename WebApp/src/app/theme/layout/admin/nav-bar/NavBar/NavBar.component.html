@@ -1,0 +1,43 @@
+@if (!mobileMenuOn || !smallScreen) {
+<ul class="gc-navbar-left">
+  @if(!menuVisible || smallScreen) {
+  <li>
+    <a (click)="onNavOpen()" href="javascript:"><fa-icon [icon]="menuIcon" ></fa-icon></a>
+  </li>
+  }
+  @if(!smallScreen) {
+  <li appToggleFullScreen>
+    <a href="javascript:" class="full-screen"><i class="feather icon-maximize"></i></a>
+  </li>
+  }
+</ul>
+
+<span class="text-center page-title" [ngClass]="{'closed-menu': smallScreen || MenuState.eClosed === menuState, 
+              'expanded-menu': !smallScreen  && MenuState.eExpanded === menuState,
+              'collapsed-menu':!smallScreen && MenuState.eCollapsed === menuState}">
+  {{pageTitle}}
+</span>
+}
+
+
+<span class="right-pannel">
+  @if (!smallScreen || (smallScreen && mobileMenuOn)) {
+  <a nz-dropdown [nzDropdownMenu]="menu">
+    {{currentUser}}
+    <fa-icon [icon]="downArrowIcon" size="xs"></fa-icon>&nbsp;
+  </a>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu nzSelectable>
+      <li nz-menu-item (click)="onLogout()">
+        
+        Logout <fa-icon [icon]="logoutIcon"></fa-icon>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+  }
+  @if (smallScreen) {
+  <a href="javascript:" (click)="onToggleMenuClick()">
+    <fa-icon [icon]="mobileIcon" ></fa-icon>
+  </a>
+  }
+</span>

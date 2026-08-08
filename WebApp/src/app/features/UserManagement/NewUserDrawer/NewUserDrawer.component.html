@@ -1,0 +1,77 @@
+<div class="new-user-drawer">
+  <div>
+    <div class="d-flex justify-content-center align-items-center">
+      <h5 class="text-center">New User</h5>
+    </div>
+    <hr class="mt-0 mb-0">
+  </div>
+  <form class="row m-0" [formGroup]="newUserForm">
+    <div class="col-6 input-group-sm">
+      <label for="">Username</label>
+      <input type="text" formControlName="username" class="form-control"
+        placeholder="Username"
+        [class.is-invalid]="newUserForm.get('username')?.errors && newUserForm.get('username')?.touched"
+        (change)="onUsernameChange()">
+      @if (newUserForm.get('username')?.hasError('required')) {
+      <div class="invalid-feedback text-start">Username is required</div>
+      }
+      @if (newUserForm.get('username')?.hasError('maxlength')) {
+      <div class="invalid-feedback text-start">Username cannot be longer than {{maxUsernameSize}} characters
+      </div>
+      }
+    </div>
+    <div class="col-12 input-group-sm">
+      <label for="">Full Name</label>
+      <input type="text" formControlName="fullname" class="form-control"
+        placeholder="Full Name"
+        [class.is-invalid]="newUserForm.get('fullname')?.errors && newUserForm.get('fullname')?.touched"
+        (change)="onFullNameChange()">
+      @if (newUserForm.get('fullname')?.hasError('maxlength')) {
+      <div class="invalid-feedback text-start">Full name cannot be longer than {{maxFullNameSize}} characters
+      </div>
+      }
+    </div>
+    <div class="col-12 input-group-sm mt-2">
+      <label for="">Email</label>
+      <input type="email" formControlName="email" class="form-control" placeholder="Email"
+        [class.is-invalid]="newUserForm.get('email')?.errors && newUserForm.get('email')?.touched"
+        (change)="onEmailChange()">
+      @if (newUserForm.get('email')?.hasError('required')) {
+      <div class="invalid-feedback text-start">Email is required</div>
+      }
+      @if (newUserForm.get('email')?.hasError('email')) {
+      <div class="invalid-feedback text-start">Invalid email format</div>
+      }
+    </div>
+    <div class="col-6 input-group-sm mt-2">
+      <label for="">Password</label>
+      <input type="email" formControlName="password" class="form-control" placeholder="Password"
+        [class.is-invalid]="newUserForm.get('password')?.errors && newUserForm.get('password')?.touched"
+        >
+      @if (newUserForm.get('password')?.hasError('required')) {
+      <div class="invalid-feedback text-start">Password is required</div>
+      }
+    </div>
+  </form>
+  <div class="row m-0">
+  <div class="mt-1">Select Roles</div>
+  <div class="d-flex flex-wrap">
+    @for (sel of rolesSelection; track sel.Role) {
+    <div class="form-check me-2">
+      <input class="form-check-input me-1" type="checkbox" [id]="sel.Role" [name]="sel.Role" [(ngModel)]="sel.Selected">
+      <label class="form-check-label " [for]="sel.Role">{{sel.Role}}</label>
+    </div>
+    }
+  </div>
+  <div class="col-12 mt-2">
+    <button type="button" class="btn small-button btn-outline-warning" nz-popconfirm
+      nzPopconfirmTitle="You will lose data. Are you sure to reset?" nzOkText="Reset" nzOkType="danger" nzCancelText="No"
+      (nzOnConfirm)="onResetClick()" [nzCondition]="!isModified">Reset</button>
+    <button class="btn small-button btn-outline-info ms-1  me-0 float-end" (click)="onSaveClick()">Save</button>
+    <button class="btn small-button btn-outline-danger float-end" nz-popconfirm
+      nzPopconfirmTitle="You will lose data. Are you sure to close?" nzOkText="Close" nzOkType="danger" nzCancelText="No"
+      (nzOnConfirm)="onCloseClick()" [nzCondition]="!isModified">Cancel</button>
+  
+  </div>
+  </div>
+</div>

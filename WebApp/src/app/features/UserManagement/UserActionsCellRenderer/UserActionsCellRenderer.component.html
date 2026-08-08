@@ -1,0 +1,47 @@
+<div class="actionButtonGroup">
+  <a class="" href="javascript:" 
+    nz-popover nzPopoverTitle=""
+      [nzPopoverTitle]="titleTemplate" nzPopoverTrigger="click" [nzPopoverContent]="contentTemplate"
+      [(nzPopoverVisible)]="popupVisible" title="Reset password"
+      >
+    <fa-layers [fixedWidth]="true">
+      <fa-icon [icon]="revertIcon" style="color: red;" transform="shrink-4 up-4 right-8"></fa-icon>
+      <fa-icon [icon]="passwordIcon" transform="flip-h" class=""></fa-icon>
+    </fa-layers>
+    
+  </a>&nbsp;
+
+  @if(user?.IsLocked) {
+  <a class="" href="javascript:" nz-popconfirm nzPopconfirmTitle="Are you sure to unlock?" nzOkText="Unlock"
+    nzOkType="primary" nzCancelText="No" (nzOnConfirm)="onUnlockClick()" title="Unlock user">
+    <fa-icon [icon]="unlockIcon">
+    </fa-icon>
+  </a>&nbsp;
+  }
+  
+
+  <ng-template #titleTemplate>
+    <div style="position: relative; text-align: center; width: 250px;">
+      <a (click)="onCloseClick()" title="Close" href="javascript:void(0)"
+        class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center p-0 m-0"
+        style="width: 15px; height: 15px; position: absolute; top: 5px; right: 0px;">
+        <fa-icon [icon]="closeIcon" class="p-0 m-0" transform="shrink-2"></fa-icon>
+      </a>
+      <div>Reset Password
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #contentTemplate>
+    <div class="">
+      <label for="">New Passowrd for {{user?.Username}}</label>
+      <input type="text" class="form-control" style="height: 25px; padding: 5px" placeholder="New Password" 
+      [(ngModel)]="newPassword"
+      >
+      <div class="mb-1 mt-2">
+        <button class="btn small-button btn-outline-info float-end me-0" (click)="onPasswordResetClick()">Reset</button>
+      </div>
+      <div style="height: 20px;">&nbsp;</div>
+    </div>
+  </ng-template>
+</div>

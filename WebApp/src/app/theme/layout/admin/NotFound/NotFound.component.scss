@@ -1,0 +1,22 @@
+@import './../../../../../scss/variables';
+
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    height: calc(100vh - #{$header-height} - 15px);
+    text-align: center;
+}
+
+.error-code {
+    font-size: 96px;
+    margin: 0;
+    color: lightgray;
+}
+
+.error-message {
+    font-size: 18px;
+    margin: 10px 0 20px;
+}
+

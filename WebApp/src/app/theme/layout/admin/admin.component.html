@@ -1,0 +1,48 @@
+<div style="height: 100vh;">
+  <app-navigation [hidden]="!menuVisible()" class="pcoded-navbar" [ngClass]="{
+    'navbar-collapsed': navCollapsed(),
+    'mob-open': navCollapsedMob
+  }" (NavCollapse)="onNavCollapsed()" (NavCollapsedMob)="navMobClick()" (NavClosed)="navClosed()"
+  [navCollapsed]="navCollapsed()"
+  ></app-navigation>
+
+  <app-NavBar class="gc-navbar" [menuVisible]="menuVisible()" [smallScreen]="isSmallScreen" (NavOpen)="onNavOpen()"
+    [pageTitle]="pageTitle" [menuState]="menuState()" [ngClass]="{'when-mMenu-hidden':!menuVisible(), 
+                'full-menu':(MenuState.eExpanded === menuState()) && !isSmallScreen, 
+                'collapsed-menu':(MenuState.eCollapsed === menuState()),
+                'small-screen': isSmallScreen
+    }">
+  </app-NavBar>
+  <hr class="mt-0 mb-0">
+  <app-spinner></app-spinner>
+  <div class="pcoded-main-container main-container" [ngClass]="{'when-mMenu-hidden':!menuVisible()}">
+    <div class="pcoded-wrapper ">
+      <div class="pcoded-content m-0 p-1 ">
+        <div class="pcoded-inner-content">
+          <!-- <app-breadcrumbs></app-breadcrumbs> -->
+          <div class="main-body">
+            <div class="page-wrapper">
+              <mat-drawer-container  hasBackdrop="true">
+                <mat-drawer style="height: 100%" class="w-100"  #drawer mode="over" position="end" disableClose="true" hasBackdrop="false" appDisableSwipeDrawer
+                >
+                  <div class="row m-0 p-0" style="height: 100%">
+                    <app-DrawerContainer style="height: 100%" class="bg-white  p-0 drawer-container"
+                      [ngClass]="drawerClass"
+                      [drawerComponent]="drawerComponent"
+                      [data]="drawerData">
+                    </app-DrawerContainer>
+                  </div>
+                </mat-drawer>
+                <mat-drawer-content style="overflow: hidden;">
+                  <router-outlet ></router-outlet>
+                </mat-drawer-content>
+              </mat-drawer-container>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pc-menu-overlay" (click)="closeMenu()" (keydown)="handleKeyDown($event)" tabindex="0"></div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+@import './../../../../styles.scss';
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - $header-height - 20px);
+    padding: 0px;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    overflow: auto;
+}
+.summary-container {
+    display: flex;
+    flex-wrap: wrap;     /* Move to next line when needed */
+    gap: 8px;            /* Space between panels */
+    align-items: flex-start;
+}
+
+.summary-panel {
+    position: relative;
+    border: 1px solid #cfd4da;
+    border-radius: 8px;
+    padding: 10px 5px 5px;
+    background: #fff;
+    width: fit-content;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.summary-title {
+    position: absolute;
+    top: -9px;
+    left: 16px;
+
+    display: flex;
+    align-items: center;
+    
+    background: #fff;
+    padding: 0px;
+    margin: 0px;
+
+    font-size: 10px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.show-summary-title {
+    display: flex;
+    align-items: center;
+    
+    background: #fff;
+    font-size: 10px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.red-black-block {
+    display: inline-block;  
+    width: 15px;
+    height: 15px;
+    border: 1px solid #666;
+    background: linear-gradient(
+        -45deg,
+        red 0%,
+        red 50%,
+        black 50%,
+        black 100%
+    );
+}
+

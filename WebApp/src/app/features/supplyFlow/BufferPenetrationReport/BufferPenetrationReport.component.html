@@ -1,0 +1,60 @@
+<div class="main-container">
+  @if(showingColorSummary) {
+  <div class="summary-container mt-1 mb-1">
+    <div class="summary-panel me-2">
+      <div class="summary-title">
+        <span class="me-1">Tech Color Summary</span>
+        <a (click)="onToggleDetails()" title="Show Details" href="javascript:void(0)"
+          class=" mt-1 m-0 btn btn-sm border-secondary rounded-circle p-0 d-flex align-items-center justify-content-center"
+          style="width: 15px; height: 15px;">
+          <fa-icon [icon]="colorSummaryIcon" transform="shrink-2" class="text-secondary">
+          </fa-icon>
+        </a>
+      </div>
+      @for (cs of techColorSummary; track $index) {
+      <span class="status-color-block " [style]="{'background': cs.color, 'margin-right': '1px'}"></span>
+      <span class="">{{cs.count}}</span>
+      <span class="info-header me-2">({{cs.perc}}%)</span>
+      }
+      <span class="red-black-block" [style]="{'margin-right': '1px'}"></span>
+      <span class="">{{blackRedSummary["techBlackRedCount"]}}</span>
+      <span class="info-header me-2">({{blackRedSummary["techBlackRedPerc"]}}%)</span>
+
+      <span class="me-1 info-header">Availability</span>
+      <span class="me-1">{{availability}}%</span>
+      
+
+    </div>
+    <div class="summary-panel me-2">
+      <div class="summary-title">
+        <span class="me-1">Eco Color Summary</span>
+      </div>
+      @for (cs of ecoColorSummary; track $index) {
+      <span class="status-color-block me-1" [style]="{'background': cs.color}"></span>
+      <span class="me-3">{{cs.count}}</span>
+      }
+      <span class="red-black-block" [style]="{'margin-right': '1px'}"></span>
+      <span class="">{{blackRedSummary["ecoBlackRedCount"]}}</span>
+      <span class="info-header me-2">({{blackRedSummary["ecoBlackRedPerc"]}}%)</span>
+    </div>
+  </div>
+  } @else {
+  <div class="show-summary-title ">
+    <span class="me-1">Show Color Summary</span>
+    <a (click)="onToggleDetails()" title="Show Details" href="javascript:void(0)"
+      class="mt-2 btn btn-sm border-secondary rounded-circle p-0 d-flex align-items-center justify-content-center"
+      style="width:15px; height:15px;">
+      <fa-icon [icon]="colorSummaryIcon" transform="shrink-2" class="text-secondary">
+      </fa-icon>
+    </a>
+  </div>
+  }
+  <div class="grid-container">
+    <ag-grid-angular style="height: calc(100%);" [rowData]="bpr" [gridOptions]="gridOptions" class="col-12 bpr-grid"
+      [ngClass]="agGridTheme" (gridReady)="onGridReady($event)" overlayNoRowsTemplate="BPR not generated." />
+  </div>
+  <!-- <div class="mt-1">
+    <button class="btn btn-sm btn-outline-info ms-1 m-0 small-button" (click)="onNewUserClick()">
+      New User</button>
+  </div> -->
+</div>

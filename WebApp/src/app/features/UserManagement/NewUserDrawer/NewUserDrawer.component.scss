@@ -1,0 +1,8 @@
+@import './../../../../scss/variables';
+
+.new-user-drawer {
+    .form-check-input[type=checkbox] {
+        border-color: $primary-color;
+    }
+}
+

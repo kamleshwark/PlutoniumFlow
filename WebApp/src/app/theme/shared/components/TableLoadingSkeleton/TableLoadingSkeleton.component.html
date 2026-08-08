@@ -1,0 +1,20 @@
+<div class="table-loading-skeleton">
+  <table class="w-100" >
+    <tr>
+      @for (col of cols; track $index) {
+        <td>
+          <div class="header-skeleton"></div>
+        </td>
+      }
+    </tr>
+    @for (row of rows; track $index) {
+      <tr>
+        @for (col of cols; track $index) {
+          <td>
+            <div class="skeleton"></div>
+          </td>
+        }
+      </tr>
+    }
+  </table>
+</div>

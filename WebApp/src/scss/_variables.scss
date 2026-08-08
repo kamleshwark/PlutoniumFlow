@@ -1,0 +1,173 @@
+// =======================================
+//     List of variables for layout
+// =======================================
+
+$header-height: 70px;
+$Menu-width: 264px;
+$Menu-collapsed-width: 80px;
+
+// color list for build layouts
+// temp variables
+$white:    #fff !default;
+$gray-100: #fafafa !default;
+$gray-200: #f9f8fc !default;
+$gray-300: #ededed !default;
+$gray-400: #cbc8d0 !default;
+$gray-500: #adb5bd !default;
+$gray-600: #868e96 !default;
+$gray-700: #444 !default;
+$gray-800: #343a40 !default;
+$gray-900: #17141f !default;
+$black:    #000 !default;
+
+$blue:    #007bff !default;
+$indigo:  #6610f2 !default;
+$purple:  #593196 !default;
+$pink:    #e83e8c !default;
+$red:     #fc3939 !default;
+$orange:  #fd7e14 !default;
+$yellow:  #efa31d !default;
+$green:   #13b955 !default;
+$teal:    #20c997 !default;
+$cyan:    #009cdc !default;
+
+$primary-color: $purple !default;
+$theme-color: linear-gradient(-135deg, $primary-color 0%, #1dc4e9 100%);
+$theme-color2: linear-gradient(-135deg, #899fd4 0%, #a389d4 100%);
+$warning-color: $yellow !default;
+$danger-color:  $red !default;
+$success-color: $green !default;
+$purple-color: #a389d4;
+$info-color: $blue !default;
+$secondary-color: #a991d4 !default;
+$default-color: #d6d6d6;
+$light-color: $gray-200 !default;
+$dark-color: $gray-900 !default;
+$inverse-color: $dark-color;
+$theme-border: #eaeaea;
+
+
+// header
+$brand-background: #3f4d67;
+$header-dark-background: darken($primary-color, 10);
+$header-dark-text-color: #fff;
+$header-light-background: #fff;
+$header-light-text-color: #3f4d67;
+
+// Menu
+$menu-caption-color: #14171d;
+$menu-dark-background: $primary-color;
+$menu-dark-text-color: #a9b7d0;
+$menu-light-background: #fff;
+$menu-light-text-color: #3f4d67;
+$menu-active-color: #04a9f5;
+
+// dark layout colors
+$dark-layout: #212224;
+$dark-layout-font: #adb7be;
+
+// Menu icon
+$menu-icon-color: $primary-color, #ff5252, #01a9ac, #9575cd, #23b7e5, $warning-color;
+// Header background
+$color-header-name: blue, red, purple, lightblue, dark;
+$color-header-color: $primary-color, #ff5252, #9575cd, #23b7e5, lighten($dark-layout, 7%);
+// Menu background
+$color-menu-name: blue, red, purple, lightblue, dark;
+$color-menu-color: $primary-color, #ff5252, #9575cd, #23b7e5, lighten($dark-layout, 7%);
+// Active background color
+$color-active-name: blue, red, purple, lightblue, dark;
+$color-active-color: $primary-color, #ff5252, #9575cd, #23b7e5, lighten($dark-layout, 7%);
+// Menu title color
+$color-title-name: blue, red, purple, lightblue, dark;
+$color-title-color: $primary-color, #ff5252, #9575cd, #23b7e5, lighten($dark-layout, 7%);
+
+$theme-font-family: 'Open Sans', sans-serif;
+$theme-font-size: 14px;
+$theme-background: #f4f7fa;
+$theme-font-color: #888;
+$theme-heading-color: #111;
+
+$layout-6-bg-color: #23b7e5;
+
+$color-name: c-blue, c-red, c-green, c-yellow, c-purple;
+$color-color: $primary-color, $danger-color, $success-color, $warning-color, $purple-color;
+$color-bt-name: primary, danger, success, warning, info;
+$color-bt-color: $primary-color, $danger-color, $success-color, $warning-color, $info-color; // form-control variables
+$form-bg: #f0f3f6;
+
+$theme-colors: () !default;
+
+$theme-colors: map-merge(
+  (
+    'primary': $primary-color,
+    'secondary': $secondary-color,
+    'success': $success-color,
+    'info': $info-color,
+    'warning': $warning-color,
+    'danger': $danger-color,
+    'light': $light-color,
+    'dark': $dark-color
+  ),
+  $theme-colors
+); // Color contrast
+$yiq-contrasted-threshold: 200 !default;
+$yiq-dark-color: #37474f;
+$yiq-light-color: #fff;
+$theme-color-interval: 8% !default;
+$alert-bg-level: -10 !default;
+$alert-border-level: -9 !default;
+$alert-color-level: 6 !default;
+
+$soft-bg-level: -80%;
+
+$min-contrast-ratio:   2.1 !default;
+
+// Options
+
+$enable-rounded: false !default;
+
+// Body
+
+$body-color:                $gray-700 !default;
+
+// Links
+
+$link-hover-color:          $primary-color !default;
+
+// Tables
+
+$table-color:                 initial !default;
+
+$table-border-color:          rgba(0, 0, 0, .05) !default;
+
+// Forms
+
+$input-focus-border-color:              $primary-color !default;
+
+// Dropdowns
+
+$dropdown-link-hover-color:         $white !default;
+$dropdown-link-hover-bg:            $primary-color !default;
+
+// Navs
+
+$nav-tabs-border-color:             $gray-300 !default;
+$nav-tabs-link-hover-border-color:  $primary-color !default;
+
+// Navbar
+
+$navbar-padding-y:                  1.2rem !default;
+
+// Progress bars
+
+$progress-bg:                       $gray-300 !default;
+$progress-bar-bg:                   $primary-color !default;
+
+// List group
+
+$list-group-bg:                     $gray-900 !default;
+$list-group-border-color:           transparent !default;
+$list-group-hover-bg:               lighten($list-group-bg, 10%) !default;
+$list-group-active-color:           $white !default;
+$list-group-active-bg:              $list-group-bg !default;
+$list-group-disabled-color:         lighten($list-group-bg, 30%) !default

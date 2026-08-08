@@ -1,0 +1,25 @@
+.color-completiomn-status {
+    .ant-progress-circle .ant-progress-text {
+        font-size: 0.75em;
+    }
+
+    .green svg.ant-progress-circle {
+        background: lightgreen;
+    }
+
+    .yellow svg.ant-progress-circle {
+        background: lighten($color: yellow, $amount: 35);
+    }
+
+    .red svg.ant-progress-circle {
+        background: lighten($color: red, $amount: 40);
+    }
+
+    .black svg.ant-progress-circle {
+        background: lightgray;
+    }
+
+    .white svg.ant-progress-circle {
+        background: white;
+    }
+}

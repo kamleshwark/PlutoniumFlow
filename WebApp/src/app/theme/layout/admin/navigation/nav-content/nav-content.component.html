@@ -1,0 +1,42 @@
+<ng-scrollbar  exclude="'#mobile-collapse1'" visibility="hover">
+  <div class="navbar-content">
+    <ul class="nav pcoded-inner-navbar" (clickOutside)="fireOutClick()" (mouseleave)="navMob()">
+      @for (item of navigation; track item) {
+        @if (item.type == 'group') {
+          <app-nav-group [item]="item"></app-nav-group>
+        }
+        @if (item.type == 'collapse') {
+          <app-nav-collapse [item]="item"></app-nav-collapse>
+        }
+        @if (item.type == 'item') {
+          <app-nav-item [item]="item"></app-nav-item>
+        }
+      }
+    </ul>
+    <div class="p-20 promotion">
+      <div class="card pro-card text-center">
+        <div class="card-body p-2">
+          Powered by
+          <a
+            href="https://plutoniumgroupindia.com/"
+            target="_blank"
+            >
+          <img src="assets/images/PlutoniumGroupLogo.png" alt="images" class="img-fluid mb-2" />
+          </a>
+          <!-- <h4 class="">{{title}}</h4> -->
+          <!-- <p> &lt;Tagline here &gt;</p> -->
+          <!-- <a
+          href="https://plutoniumgroupindia.com/"
+            target="_blank"
+            class="btn text-white btn-primary"
+          >
+            Download User Manual
+          </a> -->
+        </div>
+      </div>
+    </div>
+    <div class="version">
+      <label disabled class="pe-auto">v{{ currentApplicationVersion }}</label>
+    </div>
+  </div>
+</ng-scrollbar>

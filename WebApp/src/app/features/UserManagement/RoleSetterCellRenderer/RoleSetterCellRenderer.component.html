@@ -1,0 +1,44 @@
+<div class="position-relative d-flex align-items-center" >
+  <span class="text-truncate d-inline-block" style="max-width: calc(100% - 20px);">
+    {{ user.RolesStr }}
+  </span>
+  <button
+      class="btn btn-sm btn-outline-warning rounded-circle d-flex align-items-center justify-content-center p-0 m-0 me-1"
+      style="width: 15px; height: 15px; position: absolute; top: 5px; right: 0px;" nz-popover nzPopoverTitle=""
+      [nzPopoverTitle]="titleTemplate" nzPopoverTrigger="click" [nzPopoverContent]="contentTemplate"
+      [(nzPopoverVisible)]="popupVisible" title="Select Roles">
+      <fa-icon [icon]="tpSelectionIcon" transform="shrink-6 up-1" class="m-0 p-0"></fa-icon>
+  </button>
+
+    <ng-template #contentTemplate>
+      <div class="" >
+        <div class="ms-2 ps-1" style="max-height: 250px;overflow-y: auto;">
+          @for (sel of rolesSelection; track $index) {
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" [id]="sel.Role" [name]="sel.Role"
+              [(ngModel)]="sel.Selected" (change)="onSelectionChange()">
+              <label class="form-check-label" [for]="sel.Role" >{{sel.Role}}</label>
+            </div>
+            }
+        </div>
+        <div class="mb-1">
+          <button class="btn small-button btn-outline-warning float-start" (click)="onClearAllClick()" >Clear All</button>
+          <button class="btn small-button btn-outline-info float-end" (click)="onSaveClick()" >Save</button>
+        </div>
+        <div style="height: 20px;">&nbsp;</div>
+      </div>
+    </ng-template>
+    <ng-template #titleTemplate>
+  <div style="position: relative; text-align: center; width: 250px;">
+    <a (click)="onCloseClick()" title="Close" href="javascript:void(0)"
+      class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center p-0 m-0"
+      style="width: 15px; height: 15px; position: absolute; top: 5px; right: 0px;">
+      <fa-icon [icon]="closeIcon" class="p-0 m-0" transform="shrink-2"></fa-icon>
+    </a>
+  
+    <div>Select Roles
+      <span class="info-header">({{selectedRoleCount}})</span>
+    </div>
+  </div>
+  </ng-template>
+</div>
