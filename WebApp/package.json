@@ -1,8 +1,8 @@
 {
-  "name": "gms",
-  "title": "G M S",
+  "name": "plutonium",
+  "title": "PLUTONIUM",
   "version": "1.0.0",
-  "author": "GCIPL",
+  "author": "PGIPL",
   "ag-grid-default-theme": "ag-theme-balham",
   "scripts": {
     "ng": "ng",
