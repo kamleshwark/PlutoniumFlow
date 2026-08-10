@@ -8,13 +8,14 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
 
 @Component({
   selector: 'app-ImportDataNoRowsOverlay',
+  standalone: false,
   templateUrl: './ImportDataNoRowsOverlay.component.html',
   styleUrls: ['./ImportDataNoRowsOverlay.component.scss']
 })
 export class ImportDataNoRowsOverlayComponent implements INoRowsOverlayAngularComp  {
 
   private renderer = inject(Renderer2);
-  @ViewChild('importDataButton', { static: false }) importDataButton: ElementRef;
+  @ViewChild('importDataButton', { static: false }) importDataButton!: ElementRef;
   public params!: INoRowsOverlayParams;
   importBtnCaption = 'Import Data';
   showImportBtnIcon = true;
@@ -28,20 +29,20 @@ export class ImportDataNoRowsOverlayComponent implements INoRowsOverlayAngularCo
   constructor() { }
   agInit(params: INoRowsOverlayParams<any, any>): void {
     try {
-      this.refresh(params);
-      const importBtnCaption = params['importBtnCaption'];
+      this.refresh!(params);
+      const importBtnCaption = (params as any)['importBtnCaption'];
       if(!CommonFunctions.isStringNullOrEmpty(importBtnCaption)) {
         this.importBtnCaption = importBtnCaption;
       }
-      const noRowsText = params['noRowsText'];
+      const noRowsText = (params as any)['noRowsText'];
       if(!CommonFunctions.isStringNullOrEmpty(noRowsText)) {
         this.noRowsText = noRowsText;
       }
-      const showImportBtnIcon = params['showImportBtnIcon'];
+      const showImportBtnIcon = (params as any)['showImportBtnIcon'];
       if(CommonFunctions.isValid(showImportBtnIcon)) {
         this.showImportBtnIcon = showImportBtnIcon;
       }
-      const showImportButton = params['showImportButton'];
+      const showImportButton = (params as any)['showImportButton'];
       if(CommonFunctions.isValid(showImportButton)) {
         this.showImportButton = showImportButton;
       }

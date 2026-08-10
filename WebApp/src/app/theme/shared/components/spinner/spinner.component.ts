@@ -6,6 +6,7 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Component({
   selector: 'app-spinner',
+  standalone: false,
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
   encapsulation: ViewEncapsulation.None

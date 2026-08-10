@@ -7,6 +7,7 @@ import { NavigationItem } from '../../navigation';
 
 @Component({
   selector: 'app-nav-collapse',
+  standalone: false,
   templateUrl: './nav-collapse.component.html',
   styleUrls: ['./nav-collapse.component.scss'],
   animations: [
@@ -22,10 +23,10 @@ import { NavigationItem } from '../../navigation';
 export class NavCollapseComponent {
   // public props
   visible = false;
-  @Input() item: NavigationItem;
+  @Input() item!: NavigationItem;
 
   // public method
-  navCollapse(e) {
+  navCollapse(e:any) {
     this.visible = !this.visible;
     let parent = e.target;
     parent = parent.parentElement;

@@ -1,7 +1,9 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
 
 @Directive({
-  selector: '[appDisableSwipeDrawer]'
+  selector: '[appDisableSwipeDrawer]',
+  standalone: false,
+  
 })
 export class DisableSwipeDrawerDirective {
 

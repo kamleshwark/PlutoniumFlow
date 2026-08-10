@@ -8,6 +8,7 @@ import { IActionButtonCellRendererRowData } from './ActionButtonCellRendererRowD
 
 @Component({
   selector: 'app-ActionButtonsCellRenderer',
+  standalone: false,
   templateUrl: './ActionButtonsCellRenderer.component.html',
   styleUrls: ['./ActionButtonsCellRenderer.component.scss']
 })
@@ -28,19 +29,19 @@ export class ActionButtonsCellRendererComponent implements ICellRendererAngularC
     try {
       this.params = params;
       this.rowData = params.node.data as IActionButtonCellRendererRowData;
-      const dataImportFlag = params['dataImport'];
+      const dataImportFlag = (params as any)['dataImport'];
       if(CommonFunctions.isValid(dataImportFlag)) {
         this.isDataImportActive = dataImportFlag;
       }
-      const deleteFlag = params['delete'];
+      const deleteFlag = (params as any)['delete'];
       if(CommonFunctions.isValid(deleteFlag)) {
         this.isDeleteActive = deleteFlag;
       }
-      const deleteConfirmationFlag = params['deleteConfirmationRequired'];
+      const deleteConfirmationFlag = (params as any)['deleteConfirmationRequired'];
       if(CommonFunctions.isValid(deleteConfirmationFlag)) {
         this.deleteConfirmationRequired = deleteConfirmationFlag;
       }
-      const planningFlag = params['planning'];
+      const planningFlag = (params as any)['planning'];
       if(CommonFunctions.isValid(planningFlag)) {
         this.isPlanningActive = planningFlag;
       }

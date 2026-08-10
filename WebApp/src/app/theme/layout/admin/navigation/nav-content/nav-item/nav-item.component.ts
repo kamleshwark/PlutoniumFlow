@@ -6,15 +6,16 @@ import { NavigationItem } from '../../navigation';
 
 @Component({
   selector: 'app-nav-item',
+  standalone: false,
   templateUrl: './nav-item.component.html',
   styleUrls: ['./nav-item.component.scss']
 })
 export class NavItemComponent {
   // public props
-  @Input() item: NavigationItem;
+  @Input() item!: NavigationItem;
 
   // public method
-  closeOtherMenu(event) {
+  closeOtherMenu(event: any) {
     const ele = event.target;
     if (ele !== null && ele !== undefined) {
       const parent = ele.parentElement;
@@ -36,8 +37,8 @@ export class NavItemComponent {
         last_parent.classList.add('active');
       }
     }
-    if (document.querySelector('app-navigation.pcoded-navbar').classList.contains('mob-open')) {
-      document.querySelector('app-navigation.pcoded-navbar').classList.remove('mob-open');
+    if (document.querySelector('app-navigation.pcoded-navbar')!.classList.contains('mob-open')) {
+      document.querySelector('app-navigation.pcoded-navbar')!.classList.remove('mob-open');
     }
   }
 }

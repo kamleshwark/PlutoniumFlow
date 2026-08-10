@@ -6,13 +6,14 @@ import { faLock, faThumbTack, faThumbTackSlash, faUnlock, faXmark } from '@forta
 
 @Component({
   selector: 'app-nav-logo',
+  standalone: false,
   templateUrl: './nav-logo.component.html',
   styleUrls: ['./nav-logo.component.scss']
 })
 export class NavLogoComponent {
   // public props
   title = packageInfo.title;
-  @Input() navCollapsed: boolean;
+  @Input() navCollapsed!: boolean;
   @Output() NavCollapse = new EventEmitter();
   @Output() NavClosed = new EventEmitter();
   windowWidth = window.innerWidth;

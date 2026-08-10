@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-RowsLoadingSkeleton',
+  standalone: false,
   templateUrl: './RowsLoadingSkeleton.component.html',
   styleUrls: ['./RowsLoadingSkeleton.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -9,7 +10,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 export class RowsLoadingSkeletonComponent implements OnInit {
 
   @Input() rowsCounnt = 10;
-  rows = [];
+  rows: number[] = [];
   constructor() { }
 
   ngOnInit() {

@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-NavBar',
+  standalone: false,
   templateUrl: './NavBar.component.html',
   styleUrls: ['./NavBar.component.scss']
 })
@@ -16,7 +17,7 @@ export class NavBarComponent implements OnInit {
   
   @Input() menuVisible = false;
   @Input() smallScreen = false;
-  @Input() menuState: MenuState;
+  @Input() menuState!: MenuState;
   @Input() pageTitle = '';
   @Output() NavOpen = new EventEmitter();
 
@@ -41,7 +42,7 @@ export class NavBarComponent implements OnInit {
   
   ngOnInit() {
     try {
-      this.currentUser = this.userService.getCurrentUserName();
+      this.currentUser = this.userService.getCurrentUserName()!;
     } catch (ex) {
       console.log('Error initialising nav bar', ex);
       

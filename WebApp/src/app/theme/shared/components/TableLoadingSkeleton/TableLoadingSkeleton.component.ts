@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-TableLoadingSkeleton',
+  standalone: false,
   templateUrl: './TableLoadingSkeleton.component.html',
   styleUrls: ['./TableLoadingSkeleton.component.scss']
 })

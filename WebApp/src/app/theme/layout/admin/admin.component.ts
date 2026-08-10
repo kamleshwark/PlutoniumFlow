@@ -18,6 +18,7 @@ import { AlertSeverity } from 'src/app/utilities/Alert';
 
 @Component({
   selector: 'app-admin',
+  standalone: false,
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -33,8 +34,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Array<Subscription>();
 
-  private menuVisibleStateBeforeScreenSizeChange:boolean;
-  private navCollapsedStateBeforeScreenSizeChange:boolean;
+  private menuVisibleStateBeforeScreenSizeChange!:boolean;
+  private navCollapsedStateBeforeScreenSizeChange!:boolean;
   navCollapsed = signal(false);
   navCollapsedMob: boolean;
   windowWidth: number;
@@ -56,8 +57,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   constructor(private location: Location) {
     let current_url = this.location.path();
-    if (this.location['_baseHref']) {
-      current_url = this.location['_baseHref'] + this.location.path();
+    if ((this.location as any)['_baseHref']) {
+      current_url = (this.location as any)['_baseHref'] + this.location.path();
     }
 
     this.windowWidth = window.innerWidth;
@@ -181,7 +182,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
   }
   navMobClick() {
-    if (this.navCollapsedMob && !document.querySelector('app-navigation.pcoded-navbar').classList.contains('mob-open')) {
+    if (this.navCollapsedMob && !document.querySelector('app-navigation.pcoded-navbar')!.classList.contains('mob-open')) {
       this.navCollapsedMob = !this.navCollapsedMob;
       setTimeout(() => {
         this.navCollapsedMob = !this.navCollapsedMob;
@@ -198,7 +199,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   closeMenu() {
-    if (document.querySelector('app-navigation.pcoded-navbar').classList.contains('mob-open')) {
+    if (document.querySelector('app-navigation.pcoded-navbar')!.classList.contains('mob-open')) {
       document.querySelector('app-navigation.pcoded-navbar')?.classList.remove('mob-open');
     }
   }
@@ -242,7 +243,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   restoreMenuVisibleState() {
     const menuVisibleStorage = localStorage.getItem('menuVisible');
     if(CommonFunctions.isValid(menuVisibleStorage)) {
-      this.menuVisible.set(JSON.parse(menuVisibleStorage));
+      this.menuVisible.set(JSON.parse(menuVisibleStorage!));
     }
   }
 
@@ -253,7 +254,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   restoreNavCollpasedState() {
     const navCollapsedStorage = localStorage.getItem('navCollapsed');
     if(CommonFunctions.isValid(navCollapsedStorage)) {
-      this.navCollapsed.set(JSON.parse(navCollapsedStorage));
+      this.navCollapsed.set(JSON.parse(navCollapsedStorage!));
     }
   }
 

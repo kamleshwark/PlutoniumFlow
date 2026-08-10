@@ -1,5 +1,5 @@
 // angular import
-import { NgModule, APP_INITIALIZER  } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +30,8 @@ import { DisableSwipeDrawerDirective } from './directives/DisableSwipeDrawer.dir
 import { AppConfigService } from './services/app-config.service';
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { MenuConfigService } from './services/menu-config.service';
+import { providePrimeNG } from 'primeng/config';
+import Lara from '@primeng/themes/lara';
 
 export function initializeAppConfig(appConfigService: AppConfigService) {
   return () => appConfigService.loadConfig(); // Returns a promise
@@ -54,9 +56,9 @@ export function initializeMenuConfig(menuConfig: MenuConfigService) {
     NavBarComponent,
     DisableSwipeDrawerDirective
   ],
-  imports: [BrowserModule, 
-    AppRoutingModule, 
-    SharedModule, 
+  imports: [BrowserModule,
+    AppRoutingModule,
+    SharedModule,
     BrowserAnimationsModule,
     NzDropDownModule,
     BackButtonDisableModule.forRoot({
@@ -67,6 +69,11 @@ export function initializeMenuConfig(menuConfig: MenuConfigService) {
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    providePrimeNG({
+      theme: {
+        preset: Lara
+      }
+    }),
     NavigationItem,
     provideHttpClient(withInterceptors([jwtInterceptor])),
     MessageService,
@@ -86,4 +93,4 @@ export function initializeMenuConfig(menuConfig: MenuConfigService) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

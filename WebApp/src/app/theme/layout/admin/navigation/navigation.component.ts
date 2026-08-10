@@ -6,6 +6,7 @@ import { DattaConfig } from 'src/app/app-config';
 
 @Component({
   selector: 'app-navigation',
+  standalone: false,
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })

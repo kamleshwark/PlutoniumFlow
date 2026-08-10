@@ -6,6 +6,7 @@ import { PreloadableComponent } from 'src/app/models/Enums.enum';
 
 @Component({
   selector: 'app-DrawerContainer',
+  standalone: false,
   templateUrl: './DrawerContainer.component.html',
   styleUrls: ['./DrawerContainer.component.scss']
 })
