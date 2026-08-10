@@ -36,7 +36,7 @@ export class EncryptionService {
     // Combine the IV with the encrypted data for storage
     return {
       encryptedData: this.arrayBufferToBase64(encrypted),
-      iv: this.arrayBufferToBase64(iv)
+      iv: this.arrayBufferToBase64(iv.buffer as ArrayBuffer)
     };
   }
 
@@ -85,7 +85,7 @@ export class EncryptionService {
   }
 
   // Function to retrieve and import the Base64-encoded key
-  async importKeyFromBase64(keyAsBase64) {
+  async importKeyFromBase64(keyAsBase64: any) {
 
     // // Decode the Base64 key to a JSON string
     const keyAsJson = atob(keyAsBase64);
