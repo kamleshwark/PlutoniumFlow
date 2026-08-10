@@ -31,7 +31,7 @@ import { AppConfigService } from './services/app-config.service';
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { MenuConfigService } from './services/menu-config.service';
 import { providePrimeNG } from 'primeng/config';
-import Lara from '@primeng/themes/lara';
+import Lara from '@primeuix/themes/lara';
 
 export function initializeAppConfig(appConfigService: AppConfigService) {
   return () => appConfigService.loadConfig(); // Returns a promise

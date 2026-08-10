@@ -1,7 +1,7 @@
-import { Component, Input, OnDestroy, Inject, ViewEncapsulation, input, inject, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, Inject, ViewEncapsulation, input, inject, OnInit, DOCUMENT } from '@angular/core';
 import { Spinkit } from './spinkits';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { DOCUMENT } from '@angular/common';
+
 import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Component({
