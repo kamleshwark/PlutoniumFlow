@@ -12,4 +12,13 @@
     .ant-switch-small .ant-switch-inner {
         font-size: 10px;
     }
+
+    height: calc(100vh - $header-height - 15px);
+    display: flex;
+    flex-direction: column;
+
+    nz-splitter {
+       flex: 1 1 auto;
+        min-height: 0;
+    }
 }

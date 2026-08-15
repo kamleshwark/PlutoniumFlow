@@ -11,11 +11,12 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { FormsModule } from '@angular/forms';
 import { BufferTrendGraphCoreComponent } from './BufferTrendGraphCore/BufferTrendGraphCore.component';
 import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
+import { NzSplitterModule } from 'ng-zorro-antd/splitter';
 
 @Component({
   selector: 'app-BufferTrendGraph',
   standalone: true,
-  imports: [NzSwitchModule, FormsModule, BufferTrendGraphCoreComponent],
+  imports: [NzSwitchModule, FormsModule, BufferTrendGraphCoreComponent, NzSplitterModule],
   templateUrl: './BufferTrendGraphMain.component.html',
   styleUrls: ['./BufferTrendGraphMain.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,

@@ -36,6 +36,7 @@ export class BufferTrendGraphCoreComponent implements OnInit {
     const lineMarkerSize = 2;
     const highlightStrokeWidth = 3;
     this.chartOptions = {
+      minHeight: 250,
       title: {
         text: this.title,
         color: 'grey',
