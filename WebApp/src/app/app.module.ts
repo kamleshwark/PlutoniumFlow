@@ -1,7 +1,6 @@
 // angular import
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 
 // project import
@@ -20,7 +19,7 @@ import { ToggleFullScreenDirective } from './theme/shared/components/full-screen
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { NavBarComponent } from './theme/layout/admin/nav-bar/NavBar/NavBar.component';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDropdownModule } from 'ng-zorro-antd/dropdown';
 import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -31,7 +30,7 @@ import { AppConfigService } from './services/app-config.service';
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { MenuConfigService } from './services/menu-config.service';
 import { providePrimeNG } from 'primeng/config';
-import Lara from '@primeuix/themes/lara';
+import Nora from '@primeuix/themes/nora';
 
 export function initializeAppConfig(appConfigService: AppConfigService) {
   return () => appConfigService.loadConfig(); // Returns a promise
@@ -56,22 +55,23 @@ export function initializeMenuConfig(menuConfig: MenuConfigService) {
     NavBarComponent,
     DisableSwipeDrawerDirective
   ],
-  imports: [BrowserModule,
+  imports: [
+    BrowserModule,
     AppRoutingModule,
     SharedModule,
-    BrowserAnimationsModule,
-    NzDropDownModule,
+    NzDropdownModule,
     BackButtonDisableModule.forRoot({
       preserveScroll: true
     }),
     ToastModule,
-    MatSidenavModule,
+    MatSidenavModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
     providePrimeNG({
+      license: 'eyJpZCI6IjEwYjYzMzUxLWFjNTctNGIxNy1hYTA2LTk2OGRhODRlYThiNiIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODY4MDQ3NjQsImV4cCI6MTgxODM0MDc2NH0.9y2AAGML5eTbYNcUymVHyEQLy2uVavJLQU8at86x9Nw9lz5znOEWQ8_esWLooNTMIvUZ4doLCtCLX2pX87Z7AA',
       theme: {
-        preset: Lara
+        preset: Nora
       }
     }),
     NavigationItem,
@@ -82,15 +82,15 @@ export function initializeMenuConfig(menuConfig: MenuConfigService) {
       provide: APP_INITIALIZER,
       useFactory: initializeAppConfig,
       deps: [AppConfigService],
-      multi: true,
+      multi: true
     },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeMenuConfig,
       deps: [MenuConfigService],
-      multi: true,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faArchway, faChartGantt, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
@@ -10,10 +10,10 @@ import { IActionButtonCellRendererRowData } from './ActionButtonCellRendererRowD
   selector: 'app-ActionButtonsCellRenderer',
   standalone: false,
   templateUrl: './ActionButtonsCellRenderer.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./ActionButtonsCellRenderer.component.scss']
 })
 export class ActionButtonsCellRendererComponent implements ICellRendererAngularComp {
-  
   dataImportIcon = faFileImport;
   deleteIcon = faTrashAlt;
   gateIcon = faArchway;
@@ -30,29 +30,27 @@ export class ActionButtonsCellRendererComponent implements ICellRendererAngularC
       this.params = params;
       this.rowData = params.node.data as IActionButtonCellRendererRowData;
       const dataImportFlag = (params as any)['dataImport'];
-      if(CommonFunctions.isValid(dataImportFlag)) {
+      if (CommonFunctions.isValid(dataImportFlag)) {
         this.isDataImportActive = dataImportFlag;
       }
       const deleteFlag = (params as any)['delete'];
-      if(CommonFunctions.isValid(deleteFlag)) {
+      if (CommonFunctions.isValid(deleteFlag)) {
         this.isDeleteActive = deleteFlag;
       }
       const deleteConfirmationFlag = (params as any)['deleteConfirmationRequired'];
-      if(CommonFunctions.isValid(deleteConfirmationFlag)) {
+      if (CommonFunctions.isValid(deleteConfirmationFlag)) {
         this.deleteConfirmationRequired = deleteConfirmationFlag;
       }
       const planningFlag = (params as any)['planning'];
-      if(CommonFunctions.isValid(planningFlag)) {
+      if (CommonFunctions.isValid(planningFlag)) {
         this.isPlanningActive = planningFlag;
       }
-      
     } catch (ex) {
       console.log('Error initialising Action buttons cell renderer', ex);
     }
   }
   refresh(params: ICellRendererParams<any, any, any>): boolean {
     try {
-      
       return true;
     } catch (ex) {
       console.log('Error refreshing Action buttons cell renderer', ex);
@@ -83,5 +81,4 @@ export class ActionButtonsCellRendererComponent implements ICellRendererAngularC
       console.log('Error processing planning request', ex);
     }
   }
-
 }

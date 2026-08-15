@@ -1,4 +1,4 @@
-import { Component, input, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, input, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { StatusColor } from 'src/app/models/Enums.enum';
 import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
 
@@ -6,10 +6,10 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
   selector: 'app-ColorAndCompletion',
   templateUrl: './ColorAndCompletion.component.html',
   styleUrls: ['./ColorAndCompletion.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export class ColorAndCompletionComponent implements OnInit, OnChanges {
-
   @Input() color: StatusColor;
   @Input() completion: number;
   @Input() strokeWidth = 10;
@@ -20,18 +20,16 @@ export class ColorAndCompletionComponent implements OnInit, OnChanges {
   rgbColor: string;
   completionToShow: number;
 
-  constructor() { }
-  
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     try {
       if (changes['color']) {
         this.colorClass = this.getColorName(this.color);
         this.rgbColor = this.colorClass;
-        if(StatusColor.eYellow === this.color) {
+        if (StatusColor.eYellow === this.color) {
           this.rgbColor = '#FDDA0D';
         }
       }
@@ -47,7 +45,7 @@ export class ColorAndCompletionComponent implements OnInit, OnChanges {
   }
 
   setTooltip() {
-    const colorName = this.colorClass.charAt(0).toUpperCase() + this.colorClass.slice(1)
+    const colorName = this.colorClass.charAt(0).toUpperCase() + this.colorClass.slice(1);
     this.tooltip = `Color - ${colorName}\nCompletion - ${CommonFunctions.convertTo2PlacesIfDecimal(this.completion)}%`;
   }
   getColorName(color: StatusColor) {
@@ -74,7 +72,4 @@ export class ColorAndCompletionComponent implements OnInit, OnChanges {
     }
     return result;
   }
-
-  
-
 }

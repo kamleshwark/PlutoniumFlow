@@ -1,5 +1,5 @@
 // angular import
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -12,6 +12,7 @@ import packageInfo from '../../../../../../package.json';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './breadcrumbs.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './breadcrumbs.component.scss'
 })
 export class BreadcrumbsComponent {
@@ -97,6 +98,6 @@ export class BreadcrumbsComponent {
       }
     });
     this.navigationList = result;
-    this.titleService.setTitle(title + ' | ' +packageInfo.title);
+    this.titleService.setTitle(title + ' | ' + packageInfo.title);
   }
 }

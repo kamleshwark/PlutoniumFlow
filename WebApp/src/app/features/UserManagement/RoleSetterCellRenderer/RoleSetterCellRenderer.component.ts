@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLock, faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -19,10 +19,10 @@ import { AlertSeverity } from 'src/app/utilities/Alert';
   imports: [NzPopoverModule, FontAwesomeModule, FormsModule],
   templateUrl: './RoleSetterCellRenderer.component.html',
   styleUrls: ['./RoleSetterCellRenderer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export class RoleSetterCellRendererComponent implements ICellRendererAngularComp {
-
   private userService = inject(UserService);
   private alertService = inject(AlertService);
   private spinnerService = inject(SpinnerService);
@@ -30,14 +30,14 @@ export class RoleSetterCellRendererComponent implements ICellRendererAngularComp
 
   closeIcon = faXmark;
   tpSelectionIcon = faPencil;
-  
+
   user: CUserForAddEdit;
   params: ICellRendererParams<any, any, any>;
   rolesSelection: CUserRoleSelection[];
   popupVisible = false;
   selectedRoleCount = 0;
 
-  constructor() { }
+  constructor() {}
 
   agInit(params: ICellRendererParams<any, any, any>): void {
     try {
@@ -50,19 +50,19 @@ export class RoleSetterCellRendererComponent implements ICellRendererAngularComp
   buildRoleSelection() {
     this.rolesSelection = [];
     const allRoles = this.userService.getAllUserRoles();
-    allRoles.forEach(role => {
+    allRoles.forEach((role) => {
       const isSelected = this.user.Roles.includes(role);
       this.rolesSelection.push(new CUserRoleSelection(role, isSelected));
     });
     this.rolesSelection = Enumerable.from(this.rolesSelection)
-      .orderBy(sel => !sel.Selected)
-      .thenBy(sel => sel.Role.toLowerCase())
+      .orderBy((sel) => !sel.Selected)
+      .thenBy((sel) => sel.Role.toLowerCase())
       .toArray();
     this.updateCount();
   }
 
   updateCount() {
-    this.selectedRoleCount = this.rolesSelection.filter(sel => sel.Selected).length;
+    this.selectedRoleCount = this.rolesSelection.filter((sel) => sel.Selected).length;
   }
 
   initialise(params: ICellRendererParams<any, any, any>) {
@@ -89,20 +89,18 @@ export class RoleSetterCellRendererComponent implements ICellRendererAngularComp
       this.spinnerService.show();
       const data = {
         id: this.user.Id,
-        roles: this.rolesSelection.filter(sel => sel.Selected).map(sel => sel.Role)
-      }
-      this.httpService.put('users/UpdateRoles/', data)
-        .subscribe({
-          next: (data) => {
-            this.onUpdateRoles_Success(data);
-          },
-          error: (error) => {
-            error.context = 'Failed saving role changes';
-            this.httpService.reportAPICallFailure(error);
-            this.spinnerService.hide();
-          }
-        });
-
+        roles: this.rolesSelection.filter((sel) => sel.Selected).map((sel) => sel.Role)
+      };
+      this.httpService.put('users/UpdateRoles/', data).subscribe({
+        next: (data) => {
+          this.onUpdateRoles_Success(data);
+        },
+        error: (error) => {
+          error.context = 'Failed saving role changes';
+          this.httpService.reportAPICallFailure(error);
+          this.spinnerService.hide();
+        }
+      });
     } catch (ex) {
       this.spinnerService.hide();
       console.log('Error saving role changes', ex);
@@ -127,11 +125,12 @@ export class RoleSetterCellRendererComponent implements ICellRendererAngularComp
   }
 
   applyRoleChangesOnUser() {
-    this.user.Roles = this.rolesSelection.filter(sel => sel.Selected).map(sel => sel.Role);
+    this.user.Roles = this.rolesSelection.filter((sel) => sel.Selected).map((sel) => sel.Role);
     this.buildRoleSelection();
     console.log('Roles updated successfully');
     this.params.api.refreshCells({
-      columns: ['RolesStr'], force: true
+      columns: ['RolesStr'],
+      force: true
     });
     this.popupVisible = false;
   }
@@ -155,12 +154,11 @@ export class RoleSetterCellRendererComponent implements ICellRendererAngularComp
 
   onClearAllClick() {
     try {
-      this.rolesSelection.map(sel => sel.Selected = false);
+      this.rolesSelection.map((sel) => (sel.Selected = false));
       this.updateCount();
     } catch (ex) {
       console.log('Error clearing selection', ex);
       this.alertService.show(AlertSeverity.eError, 'Failed clearing Role selection');
     }
   }
-
 }

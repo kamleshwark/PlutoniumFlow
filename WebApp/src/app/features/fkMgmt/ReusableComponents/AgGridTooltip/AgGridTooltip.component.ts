@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ICellRendererParams } from 'ag-grid-community';
 
 @Component({
   selector: 'app-AgGridTooltip',
   standalone: true,
   templateUrl: './AgGridTooltip.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./AgGridTooltip.component.scss']
 })
 export class AgGridTooltipComponent {
-
   htmlContent: string;
-  constructor() { }
+  constructor() {}
   agInit(params: ICellRendererParams<any, any, any>): void {
     try {
       this.update(params);
@@ -19,7 +19,6 @@ export class AgGridTooltipComponent {
     }
   }
   update(params: ICellRendererParams<any, any, any>) {
-    this.htmlContent = params["htmlContent"];
+    this.htmlContent = params['htmlContent'];
   }
-
 }

@@ -1,17 +1,17 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-RowsLoadingSkeleton',
   standalone: false,
   templateUrl: './RowsLoadingSkeleton.component.html',
   styleUrls: ['./RowsLoadingSkeleton.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export class RowsLoadingSkeletonComponent implements OnInit {
-
   @Input() rowsCounnt = 10;
   rows: number[] = [];
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     try {
@@ -22,5 +22,4 @@ export class RowsLoadingSkeletonComponent implements OnInit {
       console.log('Error initialising Rows Loading Skeleton Component', ex);
     }
   }
-
 }

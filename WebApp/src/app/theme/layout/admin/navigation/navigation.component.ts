@@ -1,5 +1,5 @@
 // angular import
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 // project import
 import { DattaConfig } from 'src/app/app-config';
@@ -8,6 +8,7 @@ import { DattaConfig } from 'src/app/app-config';
   selector: 'app-navigation',
   standalone: false,
   templateUrl: './navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent {
@@ -20,8 +21,7 @@ export class NavigationComponent {
   windowWidth = window.innerWidth;
 
   // constructor
-  constructor() {
-  }
+  constructor() {}
 
   // public method
   navCollapse() {

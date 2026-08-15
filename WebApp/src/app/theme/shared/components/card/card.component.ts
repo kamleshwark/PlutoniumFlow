@@ -1,5 +1,5 @@
 // angular import
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 
 // bootstrap import
@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, NgbDropdownModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('collapsedCard', [
       state(

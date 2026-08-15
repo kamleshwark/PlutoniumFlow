@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MsalModule } from '@azure/msal-angular';
@@ -21,11 +21,10 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
   standalone: true,
   imports: [ReactiveFormsModule, FontAwesomeModule, MsalModule, FontAwesomeModule],
   templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./login.component.scss']
 })
-
 export default class LoginComponent implements OnInit {
-
   private encryptionService = inject(EncryptionService);
   private alertService = inject(AlertService);
   private httpService = inject(HttpService);
@@ -43,17 +42,15 @@ export default class LoginComponent implements OnInit {
 
   msIcon = faMicrosoft;
   azureAuthActive = false;
-  
-  constructor() { 
 
+  constructor() {
     try {
       effect(() => {
         this.loginForm.get('username')?.updateValueAndValidity();
-        this.loginForm.get('password')?.updateValueAndValidity();        
+        this.loginForm.get('password')?.updateValueAndValidity();
       });
     } catch (ex) {
       console.log('Error in login component constructor', ex);
-      
     }
   }
 
@@ -63,15 +60,12 @@ export default class LoginComponent implements OnInit {
       this.initializeForm();
       await this.autofillUserDetails();
       this.FetchPreLoginData();
-      
     } catch (ex) {
       console.log('Error in Login Component initialization', ex);
-
     }
   }
 
   initializeForm() {
-
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required, this.usernameValidator(), this.lockoutValidator()]),
       password: new FormControl('', [Validators.required, this.passwordValidator()]),
@@ -83,30 +77,30 @@ export default class LoginComponent implements OnInit {
     return (control: AbstractControl) => {
       let validator: any;
       if (LoginError.eInvalidUsername == this.loginFailedError()) {
-        validator = {invalidUsername: true};
+        validator = { invalidUsername: true };
       }
       return validator;
-    }
+    };
   }
 
   passwordValidator(): ValidatorFn {
     return (control: AbstractControl) => {
       let validator: any;
       if (LoginError.eInvalidPassword == this.loginFailedError()) {
-        validator = {invalidPassword: true};
+        validator = { invalidPassword: true };
       }
       return validator;
-    }
+    };
   }
 
   lockoutValidator(): ValidatorFn {
     return (control: AbstractControl) => {
       let validator: any;
       if (LoginError.eUserLockedout == this.loginFailedError()) {
-        validator = {userLockedout: true};
+        validator = { userLockedout: true };
       }
       return validator;
-    }
+    };
   }
 
   async saveDetails() {
@@ -114,33 +108,28 @@ export default class LoginComponent implements OnInit {
 
     localStorage.setItem(this.rememberMeLocalStorageName, rememberMe.toString());
 
-    if(rememberMe) {
-      
+    if (rememberMe) {
       // Encrypt the password
       const encryptionKey = await this.encryptionService.generateKey();
-      const { encryptedData, iv } = await this.encryptionService.encrypt(
-        this.loginForm.get('password')!.value,
-        encryptionKey
-      );
+      const { encryptedData, iv } = await this.encryptionService.encrypt(this.loginForm.get('password')!.value, encryptionKey);
 
       const loginDetails = {
         username: this.loginForm.get('username')!.value,
         password: encryptedData,
-        iv: iv,
+        iv: iv
       };
 
       localStorage.setItem(this.loginDetailsLocalStorageName, JSON.stringify(loginDetails));
       // Store the Base64 key in localStorage or IndexedDB
-      localStorage.setItem(this.encryptionKeyStorageName, (await this.encryptionService.exportKeyAsBase64(encryptionKey)));
+      localStorage.setItem(this.encryptionKeyStorageName, await this.encryptionService.exportKeyAsBase64(encryptionKey));
     } else {
       localStorage.removeItem(this.loginDetailsLocalStorageName);
     }
-    
   }
 
-  restoreDetails():any  {
+  restoreDetails(): any {
     const storage = localStorage.getItem(this.loginDetailsLocalStorageName);
-    if(CommonFunctions.isValid(storage)) {
+    if (CommonFunctions.isValid(storage)) {
       const loginDetails = JSON.parse(storage!);
       loginDetails.rememberMe = JSON.parse(localStorage.getItem(this.rememberMeLocalStorageName)!);
       return loginDetails;
@@ -149,17 +138,13 @@ export default class LoginComponent implements OnInit {
 
   async autofillUserDetails() {
     const loginDetailsFromStorage = this.restoreDetails();
-    
-    if(CommonFunctions.isValid(loginDetailsFromStorage)) {
+
+    if (CommonFunctions.isValid(loginDetailsFromStorage)) {
       const encryptionKey = await this.encryptionService.importKeyFromBase64(localStorage.getItem(this.encryptionKeyStorageName));
-      
+
       const username = loginDetailsFromStorage.username;
       const iv = loginDetailsFromStorage.iv;
-      const password = await this.encryptionService.decrypt(
-        loginDetailsFromStorage.password,
-        iv,
-        encryptionKey
-      );
+      const password = await this.encryptionService.decrypt(loginDetailsFromStorage.password, iv, encryptionKey);
 
       const rememberMe = loginDetailsFromStorage.rememberMe;
 
@@ -168,7 +153,7 @@ export default class LoginComponent implements OnInit {
       this.loginForm.get('rememberMe')!.setValue(rememberMe);
     }
   }
-  
+
   login() {
     try {
       this.alertService.closeAll();
@@ -180,28 +165,24 @@ export default class LoginComponent implements OnInit {
           const loginInfo = {
             username: this.loginForm.get('username')!.value,
             password: this.loginForm.get('password')!.value
-          }
-          
+          };
+
           this.spinnerService.show(Spinkit.skLine);
-          
-          this.httpService.put('users/login', loginInfo)
-            .subscribe({
-              next: (data: any) => {
-                this.onLoginCompleted(data);
-              },
-              error: (error) => {
-                console.log('Error in login API', error);
-                this.alertService.show(AlertSeverity.eError, 'Error connecting to the server');
-                this.spinnerService.hide();
-              }
-            });
+
+          this.httpService.put('users/login', loginInfo).subscribe({
+            next: (data: any) => {
+              this.onLoginCompleted(data);
+            },
+            error: (error) => {
+              console.log('Error in login API', error);
+              this.alertService.show(AlertSeverity.eError, 'Error connecting to the server');
+              this.spinnerService.hide();
+            }
+          });
         }
       }, 100);
-
-
     } catch (ex) {
       console.log('Error in logging in', ex);
-
     }
   }
 
@@ -218,12 +199,11 @@ export default class LoginComponent implements OnInit {
       } else {
         this.loginFailureErrorMsg = data.message;
         this.loginFailedError.set(data.code);
-        console.log('Error', data.message+'-->'+data.code);
+        console.log('Error', data.message + '-->' + data.code);
       }
       this.spinnerService.hide();
     } catch (ex) {
       console.log('Error in login', ex);
-      
     }
   }
 
@@ -237,20 +217,25 @@ export default class LoginComponent implements OnInit {
         next: (data: any) => {
           this.exchangeToken(data.idToken);
         },
-        error: err => console.error(err)
+        error: (err) => console.error(err)
       });
     } catch (ex) {
       console.log('Error logging in with Azure', ex);
-      this.alertService.show(AlertSeverity.eError, 'Failed loggin in with Azure');      
+      this.alertService.show(AlertSeverity.eError, 'Failed loggin in with Azure');
     }
   }
 
   exchangeToken(idToken: string) {
-    this.httpService.putWithHeaders('users/azure-login', {}, {
-      headers: {
-        Authorization: `Bearer ${idToken}`
-      }
-    })
+    this.httpService
+      .putWithHeaders(
+        'users/azure-login',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`
+          }
+        }
+      )
       .subscribe({
         next: (data: any) => {
           this.onLoginCompleted(data);
@@ -267,15 +252,15 @@ export default class LoginComponent implements OnInit {
     try {
       let attemptNo = 1;
       forkJoin({
-        azureAdSettings: this.httpService.get('FKMgmt/GetAzureAdSettings'),
+        azureAdSettings: this.httpService.get('FKMgmt/GetAzureAdSettings')
       })
         .pipe(
           tap({
             error: (err) => {
               console.log(`Attempt No. ${attemptNo++} failed`, err);
-            },
+            }
           }),
-          retry({ count: 10, delay: this.httpService.retryDelay }),
+          retry({ count: 10, delay: this.httpService.retryDelay })
         )
         .subscribe({
           next: (data) => {
@@ -305,13 +290,11 @@ export default class LoginComponent implements OnInit {
       console.log('Fetching pre login data finished');
     }
   }
-
 }
 
 enum LoginError {
   eNone = 0,
   eUserLockedout = 101,
   eInvalidPassword = 102,
-  eInvalidUsername = 103,
-};
-
+  eInvalidUsername = 103
+}

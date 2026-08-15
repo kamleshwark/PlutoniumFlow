@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MenuState } from '../../menu-state';
 import { faArrowRightFromBracket, faBars, faChevronDown, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
@@ -8,13 +8,13 @@ import { UserService } from 'src/app/services/user.service';
   selector: 'app-NavBar',
   standalone: false,
   templateUrl: './NavBar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./NavBar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-  
   private router = inject(Router);
   private userService = inject(UserService);
-  
+
   @Input() menuVisible = false;
   @Input() smallScreen = false;
   @Input() menuState!: MenuState;
@@ -31,7 +31,7 @@ export class NavBarComponent implements OnInit {
   MenuState = MenuState;
 
   currentUser = '';
-  
+
   onNavOpen() {
     try {
       this.NavOpen.emit();
@@ -39,22 +39,20 @@ export class NavBarComponent implements OnInit {
       console.log('Error opening menu', ex);
     }
   }
-  
+
   ngOnInit() {
     try {
       this.currentUser = this.userService.getCurrentUserName()!;
     } catch (ex) {
       console.log('Error initialising nav bar', ex);
-      
     }
   }
 
-  onToggleMenuClick(){
+  onToggleMenuClick() {
     try {
-      this.mobileMenuOn = !this.mobileMenuOn;      
+      this.mobileMenuOn = !this.mobileMenuOn;
     } catch (ex) {
       console.log('Error toggling menu', ex);
-      
     }
   }
 
@@ -62,10 +60,9 @@ export class NavBarComponent implements OnInit {
     try {
       console.log('Logged out');
       this.userService.logout();
-      this.router.navigate(['auth/signin'])
+      this.router.navigate(['auth/signin']);
     } catch (ex) {
       console.log('Error logging out', ex);
-      
     }
   }
 }

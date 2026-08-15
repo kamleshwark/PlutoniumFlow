@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/Alert.service';
 import { AlertSeverity } from 'src/app/utilities/Alert';
@@ -7,17 +7,16 @@ import { AlertSeverity } from 'src/app/utilities/Alert';
   selector: 'app-NotFound',
   standalone: true,
   templateUrl: './NotFound.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./NotFound.component.scss']
 })
 export class NotFoundComponent implements OnInit {
-
   private router = inject(Router);
   private alertService = inject(AlertService);
-  
-  constructor() { }
 
-  ngOnInit() {
-  }
+  constructor() {}
+
+  ngOnInit() {}
 
   goToHome(): void {
     try {
@@ -25,7 +24,6 @@ export class NotFoundComponent implements OnInit {
     } catch (ex) {
       console.log('Error in Go to Home button click', ex);
       this.alertService.show(AlertSeverity.eError, 'Error navigating to home');
-      
     }
   }
 }

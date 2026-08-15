@@ -17,6 +17,8 @@ export class AlertService {
 
     const duration = dur??CAlert.getDefaultDuration(severity);
     this.messageService.add({
+      summary: CAlert.getSummary(severity),
+      key: 'expanded',
       severity: CAlert.getSeverityText(severity),
       life: duration,
       detail: msg,

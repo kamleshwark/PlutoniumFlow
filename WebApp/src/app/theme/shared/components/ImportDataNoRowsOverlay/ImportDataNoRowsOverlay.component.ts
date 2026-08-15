@@ -1,19 +1,18 @@
-import { Component, ElementRef, inject, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnInit, Renderer2, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRightToBracket, faArrowTurnDown, faArrowTurnUp, faGripVertical, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import { INoRowsOverlayAngularComp } from 'ag-grid-angular';
 import { INoRowsOverlayParams } from 'ag-grid-community';
 import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
 
-
 @Component({
   selector: 'app-ImportDataNoRowsOverlay',
   standalone: false,
   templateUrl: './ImportDataNoRowsOverlay.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./ImportDataNoRowsOverlay.component.scss']
 })
-export class ImportDataNoRowsOverlayComponent implements INoRowsOverlayAngularComp  {
-
+export class ImportDataNoRowsOverlayComponent implements INoRowsOverlayAngularComp {
   private renderer = inject(Renderer2);
   @ViewChild('importDataButton', { static: false }) importDataButton!: ElementRef;
   public params!: INoRowsOverlayParams;
@@ -26,24 +25,24 @@ export class ImportDataNoRowsOverlayComponent implements INoRowsOverlayAngularCo
   gridIcon = faGripVertical;
   downArrowIcon = faArrowTurnUp;
 
-  constructor() { }
+  constructor() {}
   agInit(params: INoRowsOverlayParams<any, any>): void {
     try {
       this.refresh!(params);
       const importBtnCaption = (params as any)['importBtnCaption'];
-      if(!CommonFunctions.isStringNullOrEmpty(importBtnCaption)) {
+      if (!CommonFunctions.isStringNullOrEmpty(importBtnCaption)) {
         this.importBtnCaption = importBtnCaption;
       }
       const noRowsText = (params as any)['noRowsText'];
-      if(!CommonFunctions.isStringNullOrEmpty(noRowsText)) {
+      if (!CommonFunctions.isStringNullOrEmpty(noRowsText)) {
         this.noRowsText = noRowsText;
       }
       const showImportBtnIcon = (params as any)['showImportBtnIcon'];
-      if(CommonFunctions.isValid(showImportBtnIcon)) {
+      if (CommonFunctions.isValid(showImportBtnIcon)) {
         this.showImportBtnIcon = showImportBtnIcon;
       }
       const showImportButton = (params as any)['showImportButton'];
-      if(CommonFunctions.isValid(showImportButton)) {
+      if (CommonFunctions.isValid(showImportButton)) {
         this.showImportButton = showImportButton;
       }
       setTimeout(() => {
@@ -54,12 +53,9 @@ export class ImportDataNoRowsOverlayComponent implements INoRowsOverlayAngularCo
           });
         }
       }, 0);
-
     } catch (ex) {
       console.log('Error initialising ImportDataNoRowsOverlayComponent', ex);
-      
     }
-    
   }
   refresh?(params: INoRowsOverlayParams<any, any>): void {
     try {
@@ -75,8 +71,5 @@ export class ImportDataNoRowsOverlayComponent implements INoRowsOverlayAngularCo
     } catch (ex) {
       console.log('Error launching file import functionality', ex);
     }
-    
   }
-
-
 }

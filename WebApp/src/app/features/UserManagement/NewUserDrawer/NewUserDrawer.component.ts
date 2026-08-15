@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { CUserForAddEdit, CUserRoleSelection } from 'src/app/models/User';
@@ -17,10 +17,10 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
   imports: [ReactiveFormsModule, NzPopconfirmModule, FormsModule],
   templateUrl: './NewUserDrawer.component.html',
   styleUrls: ['./NewUserDrawer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export class NewUserDrawerComponent implements OnInit {
-
   private alertService = inject(AlertService);
   private adminService = inject(AdminService);
   private appConfigService = inject(AppConfigService);
@@ -34,17 +34,14 @@ export class NewUserDrawerComponent implements OnInit {
   maxFullNameSize = CUserForAddEdit.MAX_FULL_NAME_SIZE;
   rolesSelection: CUserRoleSelection[];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     try {
-      
       this.buildRoleSelection();
       this.initializeForm();
-      
     } catch (ex) {
       console.log('Error initialising New User Drawer Component', ex);
-      
     }
   }
 
@@ -110,22 +107,21 @@ export class NewUserDrawerComponent implements OnInit {
         newUser.FullName = this.newUserForm.get('fullname').value.trim();
         newUser.EMail = this.newUserForm.get('email').value.trim();
         newUser.Password = this.newUserForm.get('password').value.trim();
-        newUser.Roles = this.rolesSelection.filter(sel => sel.Selected).map(sel => sel.Role);
+        newUser.Roles = this.rolesSelection.filter((sel) => sel.Selected).map((sel) => sel.Role);
 
         const apiData = newUser.getDataForRegisterAPI();
-        
+
         this.spinnerService.show();
-        this.httpService.post('users/Register/', apiData)
-          .subscribe({
-            next: (data) => {
-              this.onRegister_Success(data, newUser);
-            },
-            error: (error) => {
-              error.context = 'Failed creating user';
-              this.httpService.reportAPICallFailure(error);
-              this.spinnerService.hide();
-            }
-          });
+        this.httpService.post('users/Register/', apiData).subscribe({
+          next: (data) => {
+            this.onRegister_Success(data, newUser);
+          },
+          error: (error) => {
+            error.context = 'Failed creating user';
+            this.httpService.reportAPICallFailure(error);
+            this.spinnerService.hide();
+          }
+        });
       }
     } catch (ex) {
       this.alertService.show(AlertSeverity.eError, 'Failed creating user');
@@ -142,9 +138,8 @@ export class NewUserDrawerComponent implements OnInit {
         this.userService.reportNewUserAdded(newUser);
         this.closeDrawer();
       } else {
-        this.alertService.show(AlertSeverity.eError, 'Failed creating user. Reason: '+ response.errors);
+        this.alertService.show(AlertSeverity.eError, 'Failed creating user. Reason: ' + response.errors);
       }
-
     } catch (ex) {
       console.log('Error creating user', ex);
       this.alertService.show(AlertSeverity.eError, 'Failed creating user');
@@ -170,10 +165,8 @@ export class NewUserDrawerComponent implements OnInit {
   buildRoleSelection() {
     this.rolesSelection = [];
     const allRoles = this.userService.getAllUserRoles();
-    allRoles.forEach(role => {
+    allRoles.forEach((role) => {
       this.rolesSelection.push(new CUserRoleSelection(role, false));
     });
-    
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowRotateLeft, faKey, faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -18,10 +18,10 @@ import { AlertSeverity } from 'src/app/utilities/Alert';
   standalone: true,
   imports: [NzPopconfirmModule, FontAwesomeModule, NzPopoverModule, FormsModule],
   templateUrl: './UserActionsCellRenderer.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./UserActionsCellRenderer.component.scss']
 })
 export class UserActionsCellRendererComponent implements ICellRendererAngularComp {
-
   private httpService = inject(HttpService);
   private alertService = inject(AlertService);
   private spinnerService = inject(SpinnerService);
@@ -34,7 +34,7 @@ export class UserActionsCellRendererComponent implements ICellRendererAngularCom
   passwordIcon = faKey;
   revertIcon = faArrowRotateLeft;
   closeIcon = faXmark;
-  
+
   popupVisible = false;
   newPassword = this.appConfigService.defaultPassword;
 
@@ -42,14 +42,12 @@ export class UserActionsCellRendererComponent implements ICellRendererAngularCom
     try {
       this.params = params;
       this.user = params.node.data as CUserForAddEdit;
-
     } catch (ex) {
       console.log('Error initialising User Actions Cell Renderer Component', ex);
     }
   }
   refresh(params: ICellRendererParams<any, any, any>): boolean {
     try {
-
       return true;
     } catch (ex) {
       console.log('Error refreshing User Actions Cell Renderer Component', ex);
@@ -62,25 +60,22 @@ export class UserActionsCellRendererComponent implements ICellRendererAngularCom
       this.alertService.closeAll();
       this.spinnerService.show();
 
-      this.httpService.put('users/unlockUser/' + this.user.Id, {})
-        .subscribe({
-          next: (data) => {
-            this.onUnlockUser_Success(data);
-          },
-          error: (error) => {
-            error.context = 'Failed unlocking user';
-            this.httpService.reportAPICallFailure(error);
-            this.spinnerService.hide();
-          }
-        });
-
+      this.httpService.put('users/unlockUser/' + this.user.Id, {}).subscribe({
+        next: (data) => {
+          this.onUnlockUser_Success(data);
+        },
+        error: (error) => {
+          error.context = 'Failed unlocking user';
+          this.httpService.reportAPICallFailure(error);
+          this.spinnerService.hide();
+        }
+      });
     } catch (ex) {
       this.spinnerService.hide();
       console.log('Error unlocking user', ex);
       this.alertService.show(AlertSeverity.eError, 'Failed unlocking the user');
     }
   }
-
 
   onUnlockUser_Success(response: any) {
     try {
@@ -104,19 +99,18 @@ export class UserActionsCellRendererComponent implements ICellRendererAngularCom
       this.alertService.closeAll();
       this.spinnerService.show();
 
-      const apiData = {id: this.user.Id, newPassword: this.newPassword};
-      
-      this.httpService.put('users/resetPassword/', apiData)
-        .subscribe({
-          next: (data) => {
-            this.onResetPassword_Success(data);
-          },
-          error: (error) => {
-            error.context = 'Failed resetting password';
-            this.httpService.reportAPICallFailure(error);
-            this.spinnerService.hide();
-          }
-        });
+      const apiData = { id: this.user.Id, newPassword: this.newPassword };
+
+      this.httpService.put('users/resetPassword/', apiData).subscribe({
+        next: (data) => {
+          this.onResetPassword_Success(data);
+        },
+        error: (error) => {
+          error.context = 'Failed resetting password';
+          this.httpService.reportAPICallFailure(error);
+          this.spinnerService.hide();
+        }
+      });
     } catch (ex) {
       this.spinnerService.hide();
       console.log('Error resetting password', ex);
@@ -147,5 +141,4 @@ export class UserActionsCellRendererComponent implements ICellRendererAngularCom
       console.log('Error closing', ex);
     }
   }
-
 }

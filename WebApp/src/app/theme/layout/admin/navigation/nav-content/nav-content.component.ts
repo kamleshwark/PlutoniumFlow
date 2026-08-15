@@ -1,5 +1,5 @@
 // angular import
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 
 // project import
@@ -11,6 +11,7 @@ import packageInfo from '../../../../../../../package.json';
   selector: 'app-nav-content',
   standalone: false,
   templateUrl: './nav-content.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./nav-content.component.scss']
 })
 export class NavContentComponent {

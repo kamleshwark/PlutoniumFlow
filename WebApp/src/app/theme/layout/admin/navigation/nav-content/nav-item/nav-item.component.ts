@@ -1,5 +1,5 @@
 // angular import
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 // project import
 import { NavigationItem } from '../../navigation';
@@ -8,6 +8,7 @@ import { NavigationItem } from '../../navigation';
   selector: 'app-nav-item',
   standalone: false,
   templateUrl: './nav-item.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./nav-item.component.scss']
 })
 export class NavItemComponent {

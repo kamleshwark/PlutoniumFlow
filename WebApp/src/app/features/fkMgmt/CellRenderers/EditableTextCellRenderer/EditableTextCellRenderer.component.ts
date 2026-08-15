@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
@@ -7,17 +7,17 @@ import { EditableCallbackParams, ICellRendererParams } from 'ag-grid-community';
 @Component({
   selector: 'app-EditableTextCellRenderer',
   standalone: true,
-  imports:[ FontAwesomeModule],
+  imports: [FontAwesomeModule],
   templateUrl: './EditableTextCellRenderer.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./EditableTextCellRenderer.component.scss']
 })
 export class EditableTextCellRendererComponent implements ICellRendererAngularComp {
-
   faEdit = faPencil;
-  text:string = '';
+  text: string = '';
   isCellEditable: any;
-  
-  constructor() { }
+
+  constructor() {}
   agInit(params: ICellRendererParams<any, any, any>): void {
     try {
       this.update(params);
@@ -30,7 +30,7 @@ export class EditableTextCellRendererComponent implements ICellRendererAngularCo
       this.update(params);
     } catch (ex) {
       console.log('Error refreshing Editable Text Cell Renderer Component', ex);
-      return false;  
+      return false;
     }
     return true;
   }
@@ -40,10 +40,10 @@ export class EditableTextCellRendererComponent implements ICellRendererAngularCo
       ...params,
       column: params.column
     };
-    this.isCellEditable = ('function' === typeof params.colDef!.editable)
-      ? params.colDef!.editable(editableParams as EditableCallbackParams)
-      : params.colDef!.editable;
+    this.isCellEditable =
+      'function' === typeof params.colDef!.editable
+        ? params.colDef!.editable(editableParams as EditableCallbackParams)
+        : params.colDef!.editable;
     this.text = params.value;
   }
-
 }

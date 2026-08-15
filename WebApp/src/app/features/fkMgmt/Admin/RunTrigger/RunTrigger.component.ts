@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { interval, map, Subscription, take } from 'rxjs';
 import { CBGJob } from 'src/app/models/BGJob';
 import { BackgroundJobStatusCode } from 'src/app/models/Enums.enum';
@@ -12,10 +12,10 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
   selector: 'app-RunTrigger',
   standalone: true,
   templateUrl: './RunTrigger.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./RunTrigger.component.scss']
 })
 export default class RunTriggerComponent implements OnInit {
-
   commonFunctions = CommonFunctions;
 
   adminService = inject(AdminService);
@@ -29,7 +29,7 @@ export default class RunTriggerComponent implements OnInit {
   countDownSub: Subscription;
   refreshingIn: number;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     try {
@@ -37,21 +37,19 @@ export default class RunTriggerComponent implements OnInit {
       this.fetchJobStatus(0);
     } catch (ex) {
       console.log('Error initialising Run Trigger Component', ex);
-      
     }
   }
 
   fetchJobStatus(jobId: number) {
-    this.httpService.get('BGJob/GetJobStatus/' + jobId)
-      .subscribe({
-        next: (data) => {
-          this.onGetJobStatus_Success(data);
-        },
-        error: (error) => {
-          error.context = 'Failed getting Background job status';
-          this.httpService.reportAPICallFailure(error);
-        }
-      });
+    this.httpService.get('BGJob/GetJobStatus/' + jobId).subscribe({
+      next: (data) => {
+        this.onGetJobStatus_Success(data);
+      },
+      error: (error) => {
+        error.context = 'Failed getting Background job status';
+        this.httpService.reportAPICallFailure(error);
+      }
+    });
   }
 
   onGetJobStatus_Success(response: any) {
@@ -78,8 +76,7 @@ export default class RunTriggerComponent implements OnInit {
       this.alertService.closeAll();
       this.runInProgress = true;
       this.bgJob = undefined;
-      this.httpService.post('bgjob/TriggerDailyRun/', {})
-      .subscribe({
+      this.httpService.post('bgjob/TriggerDailyRun/', {}).subscribe({
         next: (data) => {
           this.onEnqueue_Success(data);
         },
@@ -105,8 +102,7 @@ export default class RunTriggerComponent implements OnInit {
 
   readJob(data: any) {
     this.bgJob = CBGJob.readSingleFromAPIResult(data);
-    if (BackgroundJobStatusCode.eFinished === this.bgJob.Status
-      || BackgroundJobStatusCode.eNone === this.bgJob.Status) {
+    if (BackgroundJobStatusCode.eFinished === this.bgJob.Status || BackgroundJobStatusCode.eNone === this.bgJob.Status) {
       this.runInProgress = false;
     } else {
       this.startRefreshCountDown();
@@ -115,7 +111,7 @@ export default class RunTriggerComponent implements OnInit {
 
   startRefreshCountDown() {
     const countDown = interval(1000).pipe(
-      map((elapsed) => this.waitUntilRefreshTrigger-elapsed-1),
+      map((elapsed) => this.waitUntilRefreshTrigger - elapsed - 1),
       take(this.waitUntilRefreshTrigger)
     );
 
@@ -126,7 +122,7 @@ export default class RunTriggerComponent implements OnInit {
         try {
           this.refreshingIn = value;
           console.log('refreshing', this.refreshingIn);
-          if(0 === this.refreshingIn) {
+          if (0 === this.refreshingIn) {
             this.stopCountDown();
             setTimeout(() => {
               this.fetchJobStatus(this.bgJob.Id);
@@ -138,7 +134,6 @@ export default class RunTriggerComponent implements OnInit {
       }
     });
     this.refreshingIn = this.waitUntilRefreshTrigger;
-    
   }
 
   stopCountDown() {

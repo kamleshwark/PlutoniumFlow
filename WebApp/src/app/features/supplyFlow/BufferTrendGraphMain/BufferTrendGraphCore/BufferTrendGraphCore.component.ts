@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CBTGPoint } from 'src/app/models/BTGPoint';
 import { AgChartOptions } from 'ag-charts-community';
 import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
@@ -12,24 +12,23 @@ import Enumerable from 'linq';
   standalone: true,
   imports: [AgCharts],
   templateUrl: './BufferTrendGraphCore.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./BufferTrendGraphCore.component.scss']
 })
 export class BufferTrendGraphCoreComponent implements OnInit {
-
   @Input() title = '<title>';
   @Input() btgData: CBTGPoint[] = [];
 
   chartOptions!: AgChartOptions;
   isPercent = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     try {
       this.buildChartOptions();
     } catch (ex) {
       console.log('Error initialising Buffer Trend Graph Core Component', ex);
-
     }
   }
 
@@ -43,17 +42,17 @@ export class BufferTrendGraphCoreComponent implements OnInit {
         fontSize: 12
       },
       legend: {
-        enabled: true,
+        enabled: true
       },
       tooltip: {
-        range: 2,
+        range: 2
       },
       series: [
         {
-          type: "line",
-          xKey: "ReportDate",
-          yKey: "TechWhite",
-          yName: "White",
+          type: 'line',
+          xKey: 'ReportDate',
+          yKey: 'TechWhite',
+          yName: 'White',
           stroke: 'grey',
           marker: {
             size: lineMarkerSize,
@@ -73,10 +72,10 @@ export class BufferTrendGraphCoreComponent implements OnInit {
           }
         },
         {
-          type: "line",
-          xKey: "ReportDate",
-          yKey: "TechGreen",
-          yName: "Green",
+          type: 'line',
+          xKey: 'ReportDate',
+          yKey: 'TechGreen',
+          yName: 'Green',
           stroke: 'green',
           marker: {
             size: lineMarkerSize,
@@ -96,10 +95,10 @@ export class BufferTrendGraphCoreComponent implements OnInit {
           }
         },
         {
-          type: "line",
-          xKey: "ReportDate",
-          yKey: "TechYellow",
-          yName: "Yellow",
+          type: 'line',
+          xKey: 'ReportDate',
+          yKey: 'TechYellow',
+          yName: 'Yellow',
           stroke: '#ffd000',
           marker: {
             size: lineMarkerSize,
@@ -119,10 +118,10 @@ export class BufferTrendGraphCoreComponent implements OnInit {
           }
         },
         {
-          type: "line",
-          xKey: "ReportDate",
-          yKey: "TechRed",
-          yName: "Red",
+          type: 'line',
+          xKey: 'ReportDate',
+          yKey: 'TechRed',
+          yName: 'Red',
           stroke: 'red',
           marker: {
             size: lineMarkerSize,
@@ -142,10 +141,10 @@ export class BufferTrendGraphCoreComponent implements OnInit {
           }
         },
         {
-          type: "line",
-          xKey: "ReportDate",
-          yKey: "TechBlack",
-          yName: "Black",
+          type: 'line',
+          xKey: 'ReportDate',
+          yKey: 'TechBlack',
+          yName: 'Black',
           stroke: 'black',
           marker: {
             size: lineMarkerSize,
@@ -165,10 +164,10 @@ export class BufferTrendGraphCoreComponent implements OnInit {
           }
         },
         {
-          type: "line",
-          xKey: "ReportDate",
-          yKey: "Total",
-          yName: "Total",
+          type: 'line',
+          xKey: 'ReportDate',
+          yKey: 'Total',
+          yName: 'Total',
           stroke: 'blue',
           visible: false,
           marker: {
@@ -187,7 +186,7 @@ export class BufferTrendGraphCoreComponent implements OnInit {
               stroke: 'blue'
             }
           }
-        },
+        }
       ],
       axes: [
         {
@@ -197,18 +196,17 @@ export class BufferTrendGraphCoreComponent implements OnInit {
             rotation: -60,
             avoidCollisions: true
           },
-          nice: false,
+          nice: false
         },
         {
           type: 'number',
           position: 'left',
           line: {
             enabled: true,
-            stroke: '#CCC',
-
-          },
-        },
-      ],
+            stroke: '#CCC'
+          }
+        }
+      ]
     };
   }
 
@@ -219,28 +217,28 @@ export class BufferTrendGraphCoreComponent implements OnInit {
       xAxisLabel.format = this.getXAxisRange() < 90 ? '%d-%b' : '%b-%y';
 
       const tickCount = 30;
-      let interval = Math.ceil(this.getXAxisRange()/tickCount);
-      if (1>interval){
+      let interval = Math.ceil(this.getXAxisRange() / tickCount);
+      if (1 > interval) {
         interval = 1;
       }
       const dates = [];
       for (let i = 0; i < tickCount; i++) {
-        dates.push(addDays(this.btgData[0].ReportDate, i*interval));
+        dates.push(addDays(this.btgData[0].ReportDate, i * interval));
       }
 
-      xAxis.interval = {values: dates};
+      xAxis.interval = { values: dates };
 
       const yAxis = (this.chartOptions as any).axes[1];
       if (this.isPercent) {
         yAxis.interval = { step: 10 };
       } else {
-        const maxTotalObj = Enumerable.from(this.btgData).maxBy(b => b.Total);
+        const maxTotalObj = Enumerable.from(this.btgData).maxBy((b) => b.Total);
         yAxis.interval = { step: Math.round(maxTotalObj.Total / 10) };
       }
       const options = clone(this.chartOptions);
       options.data = this.buildData();
       this.chartOptions = options;
-    } 
+    }
   }
 
   rebuild(btgData: CBTGPoint[], isPercent: boolean) {
@@ -262,7 +260,7 @@ export class BufferTrendGraphCoreComponent implements OnInit {
   buildData(): any[] {
     const progressPoints: any[] = [];
 
-    this.btgData.forEach(b => {
+    this.btgData.forEach((b) => {
       let white = b.White;
       let green = b.Green;
       let yellow = b.Yellow;
@@ -300,5 +298,4 @@ export class BufferTrendGraphCoreComponent implements OnInit {
       return 'error';
     }
   }
-
 }

@@ -1,5 +1,15 @@
 // angular import
-import { Component, computed, inject, OnDestroy, OnInit, signal, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  ViewChild,
+  ViewEncapsulation,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { Location } from '@angular/common';
 
 // project import
@@ -9,7 +19,7 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BreakPointService } from 'src/app/services/breakPoint.service';
 import { Breakpoints } from '@angular/cdk/layout';
-import {MenuState} from './menu-state';
+import { MenuState } from './menu-state';
 import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
 import { MatDrawer } from '@angular/material/sidenav';
 import { CDrawerRequestData, DrawerComponent } from './drawer-component';
@@ -21,12 +31,12 @@ import { AlertSeverity } from 'src/app/utilities/Alert';
   standalone: false,
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export class AdminComponent implements OnInit, OnDestroy {
-
   @ViewChild('drawer') drawer!: MatDrawer;
-  
+
   private adminService = inject(AdminService);
   private router = inject(Router);
   private breakPointService = inject(BreakPointService);
@@ -34,8 +44,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Array<Subscription>();
 
-  private menuVisibleStateBeforeScreenSizeChange!:boolean;
-  private navCollapsedStateBeforeScreenSizeChange!:boolean;
+  private menuVisibleStateBeforeScreenSizeChange!: boolean;
+  private navCollapsedStateBeforeScreenSizeChange!: boolean;
   navCollapsed = signal(false);
   navCollapsedMob: boolean;
   windowWidth: number;
@@ -44,13 +54,13 @@ export class AdminComponent implements OnInit, OnDestroy {
   isSmallScreen = false;
   MenuState = MenuState;
   menuState = computed(() => {
-    if(this.menuVisible()) {
-      return this.navCollapsed()?MenuState.eCollapsed:MenuState.eExpanded;
+    if (this.menuVisible()) {
+      return this.navCollapsed() ? MenuState.eCollapsed : MenuState.eExpanded;
     } else {
       return MenuState.eClosed;
     }
   });
-  
+
   drawerComponent = DrawerComponent.eProjectAddEditDrawer;
   drawerClass = '';
   drawerData: any;
@@ -65,16 +75,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.navCollapsed.set(this.windowWidth >= 960 ? (DattaConfig.isCollapseMenu as boolean) : false);
     this.navCollapsedMob = false;
 
-
     this.restoreNavCollpasedState();
     this.restoreMenuVisibleState();
-
   }
 
   ngOnDestroy(): void {
     try {
       this.adminService.resetDrawer();
-      this.subscriptions.forEach(sub => {
+      this.subscriptions.forEach((sub) => {
         sub.unsubscribe();
       });
     } catch (ex) {
@@ -84,10 +92,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     try {
       let sub = this.router.events.subscribe({
-        next: event => {
+        next: (event) => {
           if (event instanceof NavigationStart) {
             this.adminService.setPageTitle('');
-          } 
+          }
         }
       });
       this.subscriptions.push(sub);
@@ -99,34 +107,33 @@ export class AdminComponent implements OnInit, OnDestroy {
         window.scrollTo(0, 0);
       });
 
-      sub = this.adminService.pageTitleObservable.subscribe(data => {
+      sub = this.adminService.pageTitleObservable.subscribe((data) => {
         this.onPageTitleSet(data);
       });
       this.subscriptions.push(sub);
 
-      sub = this.breakPointService.breakPointChangeObservable.subscribe(bp => {
+      sub = this.breakPointService.breakPointChangeObservable.subscribe((bp) => {
         this.onBreakPointChange(bp);
       });
       this.subscriptions.push(sub);
 
-      sub = this.adminService.drawerRequestObservable.subscribe(data => {
+      sub = this.adminService.drawerRequestObservable.subscribe((data) => {
         this.onDrawerOpenRequest(data);
       });
       this.subscriptions.push(sub);
 
-      sub = this.adminService.drawwerCloseRequestObservable.subscribe(data => {
+      sub = this.adminService.drawwerCloseRequestObservable.subscribe((data) => {
         this.onDrawerCloseRequest(data);
       });
       this.subscriptions.push(sub);
     } catch (ex) {
-
       console.log('Error initialising Admin Component', ex);
     }
   }
 
   onDrawerOpenRequest(drawerInfo: CDrawerRequestData) {
     try {
-      if(CommonFunctions.isValid(drawerInfo)) {
+      if (CommonFunctions.isValid(drawerInfo)) {
         this.drawerComponent = drawerInfo.Component;
         this.drawerClass = drawerInfo.Class;
         this.drawerData = drawerInfo.Data;
@@ -141,7 +148,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   onDrawerCloseRequest(data: boolean) {
     try {
       this.drawerComponent = DrawerComponent.eNone;
-      if(data && CommonFunctions.isValid(this.drawer)) {
+      if (data && CommonFunctions.isValid(this.drawer)) {
         this.drawer.close();
       }
     } catch (ex) {
@@ -152,7 +159,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   onBreakPointChange(newBreakPoint: string) {
     try {
-      if(Breakpoints.Large === newBreakPoint || Breakpoints.Medium === newBreakPoint) {
+      if (Breakpoints.Large === newBreakPoint || Breakpoints.Medium === newBreakPoint) {
         console.log('Large/medium Screen', newBreakPoint);
         if (CommonFunctions.isValid(this.menuVisibleStateBeforeScreenSizeChange)) {
           this.menuVisible.set(this.menuVisibleStateBeforeScreenSizeChange);
@@ -171,7 +178,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       }
     } catch (ex) {
       console.log('Error in Admin component, responding to breakpoint change', ex);
-      
     }
   }
   onPageTitleSet(title: string) {
@@ -206,11 +212,10 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   onNavCollapsed() {
     try {
-      this.navCollapsed.update(value => !value);
+      this.navCollapsed.update((value) => !value);
       this.saveNavCollapsedState();
     } catch (ex) {
       console.log('Error in onNavCollapsed', ex);
-      
     }
   }
 
@@ -242,7 +247,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   restoreMenuVisibleState() {
     const menuVisibleStorage = localStorage.getItem('menuVisible');
-    if(CommonFunctions.isValid(menuVisibleStorage)) {
+    if (CommonFunctions.isValid(menuVisibleStorage)) {
       this.menuVisible.set(JSON.parse(menuVisibleStorage!));
     }
   }
@@ -253,9 +258,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   restoreNavCollpasedState() {
     const navCollapsedStorage = localStorage.getItem('navCollapsed');
-    if(CommonFunctions.isValid(navCollapsedStorage)) {
+    if (CommonFunctions.isValid(navCollapsedStorage)) {
       this.navCollapsed.set(JSON.parse(navCollapsedStorage!));
     }
   }
-
 }

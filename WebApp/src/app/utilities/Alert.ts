@@ -29,7 +29,15 @@ export class CAlert {
         [AlertSeverity.eSecondary, 3000]
     ]);
 
-
+    private static SummaryMap = new Map<AlertSeverity, string>([
+        [AlertSeverity.eNone, ''],
+        [AlertSeverity.eSuccess, 'Success'],
+        [AlertSeverity.eInfo, 'Info'],
+        [AlertSeverity.eWarning, 'Check This'],
+        [AlertSeverity.eError, 'Error'],
+        [AlertSeverity.eContrast, ''],
+        [AlertSeverity.eSecondary, '']
+    ]);
 
     Severity: AlertSeverity;
     Message: string;
@@ -41,6 +49,10 @@ export class CAlert {
 
     static getDefaultDuration(severity: AlertSeverity): number {
         return this.DurationMap.get(severity);
+    }
+
+    static getSummary(severity: AlertSeverity): string {
+        return this.SummaryMap.get(severity);
     }
  }
 

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, ViewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import Enumerable from 'linq';
 import { CBTGPoint, CBTGPointTEchEco as CBTGPointTechEco } from 'src/app/models/BTGPoint';
 import { ColorType } from 'src/app/models/Enums.enum';
@@ -18,13 +18,13 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
   imports: [NzSwitchModule, FormsModule, BufferTrendGraphCoreComponent],
   templateUrl: './BufferTrendGraphMain.component.html',
   styleUrls: ['./BufferTrendGraphMain.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export default class BufferTrendGraphMainComponent implements OnInit {
-
   @ViewChild('techBTGComponent') techBTGComponent!: BufferTrendGraphCoreComponent;
   @ViewChild('ecoBTGComponent') ecoBTGComponent!: BufferTrendGraphCoreComponent;
-  
+
   private adminService = inject(AdminService);
   private spinnerService = inject(SpinnerService);
   private http = inject(HttpClient);
@@ -37,14 +37,12 @@ export default class BufferTrendGraphMainComponent implements OnInit {
   techBTGTitle = 'Technical Colors';
   ecoBTGTitle = 'Economical Colors';
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     try {
       this.adminService.setPageTitle('Buffer Trend Graph');
       this.loadSampleData();
-      
-            
     } catch (ex) {
       console.log('Error initialising Buffer Trend Graph Component', ex);
     }
@@ -53,16 +51,13 @@ export default class BufferTrendGraphMainComponent implements OnInit {
   loadSampleData() {
     try {
       this.spinnerService.show();
-      this.http
-        .get<any[]>('assets/data/BufferTrendGraphData.json')
-        .subscribe(data => {
-          this.readBTG(data);
-        });
+      this.http.get<any[]>('assets/data/BufferTrendGraphData.json').subscribe((data) => {
+        this.readBTG(data);
+      });
     } catch (ex) {
       console.log('Error loading BTG', ex);
       this.alertService.show(AlertSeverity.eError, 'Error loading Buffer Trend Graph data');
-    }
-    finally {
+    } finally {
       this.spinnerService.hide();
     }
   }
@@ -70,11 +65,11 @@ export default class BufferTrendGraphMainComponent implements OnInit {
   readBTG(data: any[]) {
     this.btg = CBTGPointTechEco.readFromAPIResult(data);
     this.btg = Enumerable.from(this.btg)
-      .orderBy(b => b.ReportDate)
+      .orderBy((b) => b.ReportDate)
       .toArray();
     this.btg = this.btg.slice(-30);
-    this.techBTG = this.btg.map(b => CBTGPoint.getBTGPoint(b, ColorType.eTechnical));
-    this.ecoBTG = this.btg.map(b => CBTGPoint.getBTGPoint(b, ColorType.eEconimical));
+    this.techBTG = this.btg.map((b) => CBTGPoint.getBTGPoint(b, ColorType.eTechnical));
+    this.ecoBTG = this.btg.map((b) => CBTGPoint.getBTGPoint(b, ColorType.eEconimical));
     this.rebuildGraphs();
     // this.makeColorSummary(this.techBTG);
     // this.restorePageSettings();
@@ -93,9 +88,8 @@ export default class BufferTrendGraphMainComponent implements OnInit {
 
   countTypeChange(params: EventEmitter<boolean>) {
     try {
-
       console.log('isPercent', this.isPercent);
-      this.rebuildGraphs()
+      this.rebuildGraphs();
     } catch (ex) {
       console.log('Error handlimg count type change', ex);
       this.alertService.show(AlertSeverity.eError, 'Failed handling count type change');

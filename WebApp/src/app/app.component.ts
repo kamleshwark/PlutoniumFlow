@@ -1,5 +1,5 @@
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { Component, inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { distinctUntilChanged, forkJoin, Subscription, tap } from 'rxjs';
 import { BreakPointService } from './services/breakPoint.service';
@@ -16,10 +16,10 @@ import { CUser } from './models/User';
   standalone: false,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
-  
   private userService = inject(UserService);
   private spinnerService = inject(SpinnerService);
   private httpService = inject(HttpService);
@@ -27,10 +27,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private breakPointService = inject(BreakPointService);
   private alertService = inject(AlertService);
 
-  private subs:Subscription[] = [];
+  private subs: Subscription[] = [];
 
-  constructor(private router: Router) { }
-  
+  constructor(private router: Router) {}
+
   ngOnInit() {
     try {
       this.router.events.subscribe((evt) => {
@@ -40,50 +40,48 @@ export class AppComponent implements OnInit, OnDestroy {
         window.scrollTo(0, 0);
       });
 
-      this.breakPointObserver.observe([Breakpoints.Large, Breakpoints.Medium, Breakpoints.Small, '(min-width: 500px)'])
+      this.breakPointObserver
+        .observe([Breakpoints.Large, Breakpoints.Medium, Breakpoints.Small, '(min-width: 500px)'])
         .pipe(
-          tap(value => console.log(value)),
+          tap((value) => console.log(value)),
           distinctUntilChanged()
-        ).subscribe(() =>
-          this.onBreakpointChanged()
-        );
+        )
+        .subscribe(() => this.onBreakpointChanged());
 
-        this.userService.setUserFromStorage();
-        if (this.userService.isTokenValid()) {
-          console.log('User Token valid');
-        } else {
-          this.router.navigate(['/auth/signin']);
-        }
+      this.userService.setUserFromStorage();
+      if (this.userService.isTokenValid()) {
+        console.log('User Token valid');
+      } else {
+        this.router.navigate(['/auth/signin']);
+      }
 
-        let sub = this.userService.loginObservable.subscribe({
-          next:(data) => {
-            if(data) {
-              this.onLogin();
-            }
+      let sub = this.userService.loginObservable.subscribe({
+        next: (data) => {
+          if (data) {
+            this.onLogin();
           }
-        });
-        this.subs.push(sub);
-
-        sub = this.httpService.apiCallFailureObservable.subscribe({
-          next:(data) => this.onAPICallFailure(data)
-        });
-        this.subs.push(sub);
-        
-        if(this.userService.isTokenValid()){
-          this.FetchCommonData()
         }
-        
+      });
+      this.subs.push(sub);
+
+      sub = this.httpService.apiCallFailureObservable.subscribe({
+        next: (data) => this.onAPICallFailure(data)
+      });
+      this.subs.push(sub);
+
+      if (this.userService.isTokenValid()) {
+        this.FetchCommonData();
+      }
     } catch (ex) {
       console.log('Error initialising app', ex);
-
     }
   }
 
   onAPICallFailure(error: any) {
     try {
-      if(CommonFunctions.isValid(error)){
+      if (CommonFunctions.isValid(error)) {
         let context = error.context;
-        if(CommonFunctions.isNull(context)) {
+        if (CommonFunctions.isNull(context)) {
           context = 'Failed Loading/Saving data';
         }
 
@@ -91,8 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.alertService.show(AlertSeverity.eError, 'You are currently not logged in. Login again.');
         } else if (403 === error.status) {
           this.alertService.show(AlertSeverity.eError, 'You do not have access to this functionality');
-        } 
-        else {
+        } else {
           this.alertService.show(AlertSeverity.eError, context);
         }
         console.log(context, error);
@@ -104,20 +101,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     try {
-      this.subs.map(sub => sub.unsubscribe());
+      this.subs.map((sub) => sub.unsubscribe());
     } catch (ex) {
       console.log('Error in on destroy', ex);
-      
     }
   }
-
 
   private onLogin() {
     try {
       this.FetchCommonData();
     } catch (ex) {
       console.log('Error processing login', ex);
-      
     }
   }
   private onBreakpointChanged() {
@@ -135,14 +129,13 @@ export class AppComponent implements OnInit, OnDestroy {
       this.breakPointService.reportBreakPointChange(currentBreakpoint);
     } catch (ex) {
       console.log('Error handling breakpoint change', ex);
-
     }
   }
 
   FetchCommonData() {
     try {
       console.log('Fetching common data');
-      
+
       this.spinnerService.show();
       forkJoin({
         issueActionOwners: this.httpService.get('users/GetIssueActionOwners'),
@@ -169,7 +162,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onFetchCommonData_Success(data: any) {
     try {
-      
       this.userService.setAllUserRoles(data.allRoles);
     } catch (ex) {
       console.log('Error reading Common data', ex);

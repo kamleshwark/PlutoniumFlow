@@ -1,4 +1,15 @@
-import { Component, Input, OnDestroy, Inject, ViewEncapsulation, input, inject, OnInit, DOCUMENT } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  Inject,
+  ViewEncapsulation,
+  input,
+  inject,
+  OnInit,
+  DOCUMENT,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { Spinkit } from './spinkits';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 
@@ -9,6 +20,7 @@ import { SpinnerService } from 'src/app/services/spinner.service';
   standalone: false,
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export class SpinnerComponent implements OnDestroy, OnInit {
@@ -22,7 +34,7 @@ export class SpinnerComponent implements OnDestroy, OnInit {
     @Inject(DOCUMENT) private document: Document
   ) {
     this.router.events.subscribe({
-      next: event => {
+      next: (event) => {
         if (event instanceof NavigationStart) {
           this.isSpinnerVisible = true;
         } else if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
@@ -32,8 +44,7 @@ export class SpinnerComponent implements OnDestroy, OnInit {
       complete: () => {
         this.isSpinnerVisible = false;
       }
-    }
-    );
+    });
 
     // var duration = 1000;
     // var timeout = duration;
@@ -46,30 +57,27 @@ export class SpinnerComponent implements OnDestroy, OnInit {
     // setTimeout(() => {
     //   this.isSpinnerVisible = false;
     // }, 2000);
-
   }
   ngOnInit(): void {
     try {
       this.spinnerService.visibilityObservable.subscribe({
-        next: status => {
+        next: (status) => {
           this.onSpinnerVisibilityChange(status);
         }
       });
     } catch (ex) {
       console.log('Error initialising Spinner', ex);
-
     }
   }
 
-  onSpinnerVisibilityChange(status:boolean) {
+  onSpinnerVisibilityChange(status: boolean) {
     try {
-      if(status) {
+      if (status) {
         this.spinner = this.spinnerService.type;
       }
       this.isSpinnerVisible = status;
     } catch (ex) {
       console.log('Error in changing spinner visibility', ex);
-      
     }
   }
   ngOnDestroy(): void {
@@ -77,7 +85,6 @@ export class SpinnerComponent implements OnDestroy, OnInit {
       this.isSpinnerVisible = false;
     } catch (ex) {
       console.log('Error destructing Spinner', ex);
-
     }
   }
 }

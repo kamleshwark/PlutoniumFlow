@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { AdminService } from 'src/app/theme/layout/admin/services/admin.service';
 import packageInfo from './../../../../../package.json';
@@ -29,10 +29,10 @@ import { UserActionsCellRendererComponent } from '../UserActionsCellRenderer/Use
   imports: [AgGridAngular, CommonModule],
   templateUrl: './UserList.component.html',
   styleUrls: ['./UserList.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None
 })
 export default class UserListComponent implements OnInit, OnDestroy {
-
   private adminService = inject(AdminService);
   private httpService = inject(HttpService);
   private alertService = inject(AlertService);
@@ -44,9 +44,9 @@ export default class UserListComponent implements OnInit, OnDestroy {
   agGridTheme = packageInfo['ag-grid-default-theme'];
   private gridApi!: GridApi<any>;
   gridOptions = {};
-  private subs:Subscription[] = [];
-  
-  constructor() { }
+  private subs: Subscription[] = [];
+
+  constructor() {}
 
   ngOnInit() {
     try {
@@ -60,13 +60,12 @@ export default class UserListComponent implements OnInit, OnDestroy {
       this.subs.push(sub);
     } catch (ex) {
       console.log('Error initialising User List Component', ex);
-
     }
   }
 
   ngOnDestroy(): void {
     try {
-      this.subs.map(sub => sub.unsubscribe());
+      this.subs.map((sub) => sub.unsubscribe());
     } catch (ex) {
       console.log('Error destroying User List Component');
     }
@@ -78,7 +77,6 @@ export default class UserListComponent implements OnInit, OnDestroy {
         this.users.push(newUser);
         this.gridApi.applyTransaction({ add: [newUser] });
       }
-
     } catch (ex) {
       console.log('Error adding new user in the list');
     }
@@ -121,23 +119,43 @@ export default class UserListComponent implements OnInit, OnDestroy {
         {
           cellRenderer: ActionButtonsCellRendererComponent,
           cellRendererParams: { delete: true, context: this },
-          width: "50", suppressSizeToFit: true,
+          width: '50',
+          suppressSizeToFit: true
         },
         {
           cellRenderer: UserActionsCellRendererComponent,
-          width: "50", suppressSizeToFit: true,
-        },
-        { field: "Sr.No", valueGetter: "node.rowIndex + 1", headerName: "Sr.No", width: "60", suppressSizeToFit: true, suppressCsvExport: true },
-        {
-          field: "Id", headerName: "id", width: "100", suppressSizeToFit: true,
-          sortable: true,
+          width: '50',
+          suppressSizeToFit: true
         },
         {
-          field: "Username", headerName: "User Name", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true,
-          sortable: true,
+          field: 'Sr.No',
+          valueGetter: 'node.rowIndex + 1',
+          headerName: 'Sr.No',
+          width: '60',
+          suppressSizeToFit: true,
+          suppressCsvExport: true
         },
         {
-          field: "FullName", headerName: "Full Name", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true,
+          field: 'Id',
+          headerName: 'id',
+          width: '100',
+          suppressSizeToFit: true,
+          sortable: true
+        },
+        {
+          field: 'Username',
+          headerName: 'User Name',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true,
+          sortable: true
+        },
+        {
+          field: 'FullName',
+          headerName: 'Full Name',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true,
           sortable: true,
           cellRenderer: EditableTextCellRendererComponent,
           editable: (params: any) => {
@@ -148,27 +166,30 @@ export default class UserListComponent implements OnInit, OnDestroy {
               console.log('Error detecting editable property of full name', ex);
             }
             return false;
-          }, 
+          },
           singleClickEdit: true,
           tooltipField: 'FullNameTooltip',
           cellClass: (params: any) => {
             let cls = '';
             try {
               const user: CUserForAddEdit = params.data;
-              if(user.FullNameSaveInProgress) {
-                cls ='data-saving';
-              } else if(!user.isFullNameValid()) {
-                cls ='erroneous-cell';
+              if (user.FullNameSaveInProgress) {
+                cls = 'data-saving';
+              } else if (!user.isFullNameValid()) {
+                cls = 'erroneous-cell';
               }
-              
             } catch (ex) {
               console.log('Error setting cell class for full name');
             }
             return cls;
-          },
+          }
         },
         {
-          field: "EMail", headerName: "Email", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true,
+          field: 'EMail',
+          headerName: 'Email',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true,
           sortable: true,
           cellRenderer: EditableTextCellRendererComponent,
           editable: (params: any) => {
@@ -179,29 +200,31 @@ export default class UserListComponent implements OnInit, OnDestroy {
               console.log('Error detecting editable property of email', ex);
             }
             return false;
-          }, 
+          },
           singleClickEdit: true,
           tooltipField: 'EmailTooltip',
           cellClass: (params: any) => {
             let cls = '';
             try {
               const user: CUserForAddEdit = params.data;
-              if(user.EmailSaveInProgress) {
-                cls ='data-saving';
-              } else if(!user.isEmailValid()) {
-                cls ='erroneous-cell';
+              if (user.EmailSaveInProgress) {
+                cls = 'data-saving';
+              } else if (!user.isEmailValid()) {
+                cls = 'erroneous-cell';
               }
-              
             } catch (ex) {
               console.log('Error setting cell class for email');
             }
             return cls;
-          },
+          }
         },
         {
-          field: "RolesStr", headerName: "Roles", width: "300", suppressSizeToFit: true,
-          cellRenderer: RoleSetterCellRendererComponent, 
-          tooltipValueGetter: () => "dummy text",//tooltip wont show up if this is blank
+          field: 'RolesStr',
+          headerName: 'Roles',
+          width: '300',
+          suppressSizeToFit: true,
+          cellRenderer: RoleSetterCellRendererComponent,
+          tooltipValueGetter: () => 'dummy text', //tooltip wont show up if this is blank
           tooltipComponent: AgGridTooltipComponent,
           tooltipComponentParams: (params: any) => {
             let result: string = '';
@@ -220,9 +243,9 @@ export default class UserListComponent implements OnInit, OnDestroy {
             options: this.userService.getRolesColumFilterOptions(),
             filterFunction: 'RoleColumnFilter'
           }
-        },
-      ],
-    }
+        }
+      ]
+    };
   }
 
   onCellValueChanged(event: any) {
@@ -245,22 +268,23 @@ export default class UserListComponent implements OnInit, OnDestroy {
   }
 
   saveFullNameChange(user: CUserForAddEdit) {
-    if(CommonFunctions.isStringNullOrEmpty(user.FullName)){
+    if (CommonFunctions.isStringNullOrEmpty(user.FullName)) {
       user.FullName = '';
     }
-    
+
     user.FullName = user.FullName.trim();
     this.changeFullNameSavingStatus(user, true);
-    
+
     let attemptNo = 1;
-    this.httpService.put('users/ModifyUser', { Id: user.Id, fullName: user.FullName})
+    this.httpService
+      .put('users/ModifyUser', { Id: user.Id, fullName: user.FullName })
       .pipe(
         tap({
           error: (err) => {
             console.log(`Attempt No. ${attemptNo++} failed`, err);
-          },
+          }
         }),
-        retry({ count: 10, delay: this.httpService.retryDelay }),
+        retry({ count: 10, delay: this.httpService.retryDelay })
       )
       .subscribe({
         next: (data) => {
@@ -282,7 +306,6 @@ export default class UserListComponent implements OnInit, OnDestroy {
       } else {
         console.log('Full name updation failed');
       }
-
     } catch (ex) {
       console.log('Failed saving Full name change', ex);
     } finally {
@@ -293,27 +316,29 @@ export default class UserListComponent implements OnInit, OnDestroy {
   changeFullNameSavingStatus(user: CUserForAddEdit, savingInProgress: boolean) {
     user.FullNameSaveInProgress = savingInProgress;
     this.gridApi.refreshCells({
-      columns: ['FullName'], force: true
+      columns: ['FullName'],
+      force: true
     });
   }
 
   saveEmailChange(user: CUserForAddEdit) {
-    if(CommonFunctions.isStringNullOrEmpty(user.EMail)){
+    if (CommonFunctions.isStringNullOrEmpty(user.EMail)) {
       user.EMail = '';
     }
-    
+
     user.EMail = user.EMail.trim();
     this.changeEmailSavingStatus(user, true);
-    
+
     let attemptNo = 1;
-    this.httpService.put('users/ModifyUser', { Id: user.Id, email: user.EMail})
+    this.httpService
+      .put('users/ModifyUser', { Id: user.Id, email: user.EMail })
       .pipe(
         tap({
           error: (err) => {
             console.log(`Attempt No. ${attemptNo++} failed`, err);
-          },
+          }
         }),
-        retry({ count: 10, delay: this.httpService.retryDelay }),
+        retry({ count: 10, delay: this.httpService.retryDelay })
       )
       .subscribe({
         next: (data) => {
@@ -335,7 +360,6 @@ export default class UserListComponent implements OnInit, OnDestroy {
       } else {
         console.log('Email updation failed');
       }
-
     } catch (ex) {
       console.log('Failed saving Email change', ex);
     } finally {
@@ -346,19 +370,23 @@ export default class UserListComponent implements OnInit, OnDestroy {
   changeEmailSavingStatus(user: CUserForAddEdit, savingInProgress: boolean) {
     user.EmailSaveInProgress = savingInProgress;
     this.gridApi.refreshCells({
-      columns: ['EMail'], force: true
+      columns: ['EMail'],
+      force: true
     });
   }
 
   RoleColumnFilter(row: CUser, selectedValues: string[]) {
-    const present = Enumerable.from(selectedValues)
-      .join(row.Roles,
-        sel => sel,
-        role => role,
-        (sel: string, role: string) => {
-          return role
-        }
-      ).toArray().length > 0;
+    const present =
+      Enumerable.from(selectedValues)
+        .join(
+          row.Roles,
+          (sel) => sel,
+          (role) => role,
+          (sel: string, role: string) => {
+            return role;
+          }
+        )
+        .toArray().length > 0;
     return present;
   }
 
@@ -371,29 +399,27 @@ export default class UserListComponent implements OnInit, OnDestroy {
   }
 
   getRowClass(params: any) {
-
     let cls = '';
     try {
-
     } catch (ex) {
       console.log('Error in getRowClass', ex);
     }
 
-
     return cls;
-  };
+  }
 
   loadUsers() {
     this.spinnerService.show();
     let attemptNo = 1;
-    this.httpService.get('users/all')
+    this.httpService
+      .get('users/all')
       .pipe(
         tap({
           error: (err) => {
             console.log(`Attempt No. ${attemptNo++} failed`, err);
-          },
+          }
         }),
-        retry({ count: 10, delay: this.httpService.retryDelay }),
+        retry({ count: 10, delay: this.httpService.retryDelay })
       )
       .subscribe({
         next: (data) => {
@@ -424,8 +450,8 @@ export default class UserListComponent implements OnInit, OnDestroy {
       const drawerInfo: CDrawerRequestData = {
         Component: DrawerComponent.eNewUserDrawer,
         Class: 'offset-lg-6 col-lg-6 offset-md-4 col-md-8 col-sm-12',
-        Data: {  }
-      }
+        Data: {}
+      };
       this.adminService.openDrawer(drawerInfo);
     } catch (ex) {
       console.log('Error launching new user screen', ex);
@@ -438,23 +464,20 @@ export default class UserListComponent implements OnInit, OnDestroy {
       this.alertService.closeAll();
       this.spinnerService.show();
 
-      this.httpService.delete('users/delete/' + user.Id)
-        .subscribe({
-          next: (data) => {
-            this.onDelete_Success(data, user);
-          },
-          error: (error) => {
-            error.context = 'Failed deleting user';
-            this.httpService.reportAPICallFailure(error);
-            this.spinnerService.hide();
-          }
-        });
-
+      this.httpService.delete('users/delete/' + user.Id).subscribe({
+        next: (data) => {
+          this.onDelete_Success(data, user);
+        },
+        error: (error) => {
+          error.context = 'Failed deleting user';
+          this.httpService.reportAPICallFailure(error);
+          this.spinnerService.hide();
+        }
+      });
     } catch (ex) {
       console.log('Error deleting user', ex);
       this.spinnerService.hide();
     }
-
   }
 
   onDelete_Success(response: any, user: CUserForAddEdit) {
@@ -473,5 +496,4 @@ export default class UserListComponent implements OnInit, OnDestroy {
       this.spinnerService.hide();
     }
   }
-
 }

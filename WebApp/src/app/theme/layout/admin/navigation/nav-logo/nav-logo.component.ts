@@ -1,13 +1,13 @@
 // angular import
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import packageInfo from '../../../../../../../package.json';
 import { faLock, faThumbTack, faThumbTackSlash, faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons';
-
 
 @Component({
   selector: 'app-nav-logo',
   standalone: false,
   templateUrl: './nav-logo.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./nav-logo.component.scss']
 })
 export class NavLogoComponent {

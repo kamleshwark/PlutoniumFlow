@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -13,17 +13,17 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
 @Component({
   selector: 'app-ChangePassword',
   standalone: true,
-  imports: [ReactiveFormsModule,FontAwesomeModule],
+  imports: [ReactiveFormsModule, FontAwesomeModule],
   templateUrl: './ChangePassword.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./ChangePassword.component.scss']
 })
 export default class ChangePasswordComponent implements OnInit {
-
   private alertService = inject(AlertService);
   private spinnerService = inject(SpinnerService);
   private userService = inject(UserService);
   private httpService = inject(HttpService);
-  
+
   showCurrentPassword = false;
   showNewPassword = false;
   showConfirmPassword = false;
@@ -31,14 +31,13 @@ export default class ChangePasswordComponent implements OnInit {
   faEyeSlash = faEyeSlash;
 
   changePasswordForm!: FormGroup;
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     try {
       this.initializeForm();
     } catch (ex) {
       console.log('Error initialising Change Password Component', ex);
-
     }
   }
 
@@ -51,7 +50,8 @@ export default class ChangePasswordComponent implements OnInit {
       },
       {
         validators: this.passwordMatchValidator()
-      });
+      }
+    );
   }
 
   passwordMatchValidator(): ValidatorFn {
@@ -59,7 +59,7 @@ export default class ChangePasswordComponent implements OnInit {
       if (CommonFunctions.isValid(this.changePasswordForm)) {
         const newPassword = this.changePasswordForm.get('newPassword')!.value;
         const confirmPassword = this.changePasswordForm.get('confirmPassword')!.value;
-        
+
         if (newPassword !== confirmPassword) {
           return { passwordMismatch: true };
         }
@@ -79,8 +79,8 @@ export default class ChangePasswordComponent implements OnInit {
         const api = 'users/ChangePassword';
         const oldPassword = this.changePasswordForm.get('currentPassword')!.value;
         const newPassword = this.changePasswordForm.get('newPassword')!.value;
-        const apiData = {id: this.userService.getCurrentUserId(), OldPassword: oldPassword, NewPassword: newPassword};
-        
+        const apiData = { id: this.userService.getCurrentUserId(), OldPassword: oldPassword, NewPassword: newPassword };
+
         this.httpService.put(api, apiData).subscribe({
           next: (data) => {
             this.onChangePassword_Success(data);

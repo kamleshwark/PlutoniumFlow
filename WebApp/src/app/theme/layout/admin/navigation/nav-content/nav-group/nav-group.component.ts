@@ -1,5 +1,5 @@
 // angular import
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 
 // project import
@@ -9,6 +9,7 @@ import { NavigationItem } from '../../navigation';
   selector: 'app-nav-group',
   standalone: false,
   templateUrl: './nav-group.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./nav-group.component.scss']
 })
 export class NavGroupComponent implements OnInit {

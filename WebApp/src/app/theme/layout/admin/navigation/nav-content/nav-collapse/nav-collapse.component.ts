@@ -1,5 +1,5 @@
 // angular import
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 // project import
@@ -10,6 +10,7 @@ import { NavigationItem } from '../../navigation';
   standalone: false,
   templateUrl: './nav-collapse.component.html',
   styleUrls: ['./nav-collapse.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
@@ -26,7 +27,7 @@ export class NavCollapseComponent {
   @Input() item!: NavigationItem;
 
   // public method
-  navCollapse(e:any) {
+  navCollapse(e: any) {
     this.visible = !this.visible;
     let parent = e.target;
     parent = parent.parentElement;

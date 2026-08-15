@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CBPRRow } from 'src/app/models/BPRRow';
 import { AlertService } from 'src/app/services/Alert.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
@@ -21,10 +21,10 @@ import { CommonFunctions } from 'src/app/utilities/CommonFunctions';
   standalone: true,
   imports: [AgGridAngular, CommonModule, FontAwesomeModule],
   templateUrl: './BufferPenetrationReport.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./BufferPenetrationReport.component.scss']
 })
 export default class BufferPenetrationReportComponent implements OnInit {
-
   private adminService = inject(AdminService);
   private spinnerService = inject(SpinnerService);
   private http = inject(HttpClient);
@@ -37,7 +37,7 @@ export default class BufferPenetrationReportComponent implements OnInit {
   techColorSummary: any[] = [];
   ecoColorSummary: any[] = [];
   availability = 0;
-  blackRedSummary:Record<string, number> = {};
+  blackRedSummary: Record<string, number> = {};
 
   closeColorSummaryIcon = faXmark;
   showColorSummaryIcon = faAngleDown;
@@ -45,8 +45,8 @@ export default class BufferPenetrationReportComponent implements OnInit {
   colorSummaryIcon: any;
 
   private readonly settingsStorageName = 'bpr-page-settings';
-  
-  constructor() { }
+
+  constructor() {}
 
   ngOnInit() {
     try {
@@ -56,15 +56,14 @@ export default class BufferPenetrationReportComponent implements OnInit {
       this.createGridOptions();
     } catch (ex) {
       console.log('Error initialising Buffer Penetration Report Component', ex);
-
     }
   }
 
   readBPR(data: any[]) {
     this.bpr = CBPRRow.readFromAPIResult(data);
     this.bpr = Enumerable.from(this.bpr)
-      .orderByDescending(b => b.TechPenetration)
-        .thenByDescending(b => b.EcoPenetration)
+      .orderByDescending((b) => b.TechPenetration)
+      .thenByDescending((b) => b.EcoPenetration)
       .toArray();
 
     this.makeColorSummary(this.bpr);
@@ -73,16 +72,13 @@ export default class BufferPenetrationReportComponent implements OnInit {
   loadSampleData() {
     try {
       this.spinnerService.show();
-      this.http
-        .get<any[]>('assets/data/pharma_inventory.json')
-        .subscribe(data => {
-          this.readBPR(data);
-        });
+      this.http.get<any[]>('assets/data/pharma_inventory.json').subscribe((data) => {
+        this.readBPR(data);
+      });
     } catch (ex) {
       console.log('Error loading BPR', ex);
       this.alertService.show(AlertSeverity.eError, 'Error loading BPR');
-    }
-    finally {
+    } finally {
       this.spinnerService.hide();
     }
   }
@@ -103,30 +99,61 @@ export default class BufferPenetrationReportComponent implements OnInit {
       },
 
       columnDefs: [
-        { field: "Sr.No", valueGetter: "node.rowIndex + 1", headerName: "Sr.No", width: "60", suppressSizeToFit: true, suppressCsvExport: true },
         {
-          field: "SKUCode", headerName: "SKU Code", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true
+          field: 'Sr.No',
+          valueGetter: 'node.rowIndex + 1',
+          headerName: 'Sr.No',
+          width: '60',
+          suppressSizeToFit: true,
+          suppressCsvExport: true
         },
         {
-          field: "LocationCode", headerName: "Location Code", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true
+          field: 'SKUCode',
+          headerName: 'SKU Code',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true
         },
         {
-          field: "Norm", headerName: "Norm", width: "90", suppressSizeToFit: true,
-          filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right', },
+          field: 'LocationCode',
+          headerName: 'Location Code',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true
         },
         {
-          field: "Stock", headerName: "Stock", width: "90", suppressSizeToFit: true,
-          filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right', },
+          field: 'Norm',
+          headerName: 'Norm',
+          width: '90',
+          suppressSizeToFit: true,
+          filter: 'agNumberColumnFilter',
+          cellStyle: { textAlign: 'right' }
         },
         {
-          field: "GIT", headerName: "GIT", width: "90", suppressSizeToFit: true,
-          filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right', },
+          field: 'Stock',
+          headerName: 'Stock',
+          width: '90',
+          suppressSizeToFit: true,
+          filter: 'agNumberColumnFilter',
+          cellStyle: { textAlign: 'right' }
         },
         {
-          field: "TechPenetration", headerName: "Tech. Pen.", width: "70", suppressSizeToFit: true,
-          filter: 'agNumberColumnFilter', cellStyle: {textAlign: "right"}, 
+          field: 'GIT',
+          headerName: 'GIT',
+          width: '90',
+          suppressSizeToFit: true,
+          filter: 'agNumberColumnFilter',
+          cellStyle: { textAlign: 'right' }
+        },
+        {
+          field: 'TechPenetration',
+          headerName: 'Tech. Pen.',
+          width: '70',
+          suppressSizeToFit: true,
+          filter: 'agNumberColumnFilter',
+          cellStyle: { textAlign: 'right' },
           valueFormatter: (params: any) => {
-            return params.value == null ? "" : Number(params.value).toFixed(1);
+            return params.value == null ? '' : Number(params.value).toFixed(1);
           },
           cellClass: (params: any) => {
             try {
@@ -136,14 +163,17 @@ export default class BufferPenetrationReportComponent implements OnInit {
               console.log('Error applying tech penetration color', ex);
               return '';
             }
-          },
-          
+          }
         },
         {
-          field: "EcoPenetration", headerName: "Eco. Pen.", width: "70", suppressSizeToFit: true,
-          filter: 'agNumberColumnFilter', cellStyle: {textAlign: "right"}, 
+          field: 'EcoPenetration',
+          headerName: 'Eco. Pen.',
+          width: '70',
+          suppressSizeToFit: true,
+          filter: 'agNumberColumnFilter',
+          cellStyle: { textAlign: 'right' },
           valueFormatter: (params: any) => {
-            return params.value == null ? "" : Number(params.value).toFixed(1);
+            return params.value == null ? '' : Number(params.value).toFixed(1);
           },
           cellClass: (params: any) => {
             try {
@@ -153,22 +183,38 @@ export default class BufferPenetrationReportComponent implements OnInit {
               console.log('Error applying eco penetration color', ex);
               return '';
             }
-          },
+          }
         },
         {
-          field: "SKUName", headerName: "SKU Name", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true
+          field: 'SKUName',
+          headerName: 'SKU Name',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true
         },
         {
-          field: "LocationName", headerName: "Location Name", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true
+          field: 'LocationName',
+          headerName: 'Location Name',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true
         },
         {
-          field: "LocationArea", headerName: "Location Area", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true
+          field: 'LocationArea',
+          headerName: 'Location Area',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true
         },
         {
-          field: "SKUType", headerName: "SKU Type", width: "200", filter: 'agTextColumnFilter', suppressSizeToFit: true
-        },
-      ],
-    }
+          field: 'SKUType',
+          headerName: 'SKU Type',
+          width: '200',
+          filter: 'agTextColumnFilter',
+          suppressSizeToFit: true
+        }
+      ]
+    };
   }
 
   onGridReady(gridReadyEvent: GridReadyEvent) {
@@ -184,7 +230,7 @@ export default class BufferPenetrationReportComponent implements OnInit {
       params.api.refreshCells({ force: true, columns: ['Sr.No'] });
 
       const filteredRows: CBPRRow[] = [];
-      this.gridApi.forEachNodeAfterFilter(node => {
+      this.gridApi.forEachNodeAfterFilter((node) => {
         filteredRows.push(node.data);
       });
       this.makeColorSummary(filteredRows);
@@ -202,33 +248,35 @@ export default class BufferPenetrationReportComponent implements OnInit {
   }
 
   makeColorSummary(rows: CBPRRow[]) {
-    const colorCodes = Object.values(StatusColor).filter(
-      (v): v is StatusColor => typeof v === "number"
-    );
+    const colorCodes = Object.values(StatusColor).filter((v): v is StatusColor => typeof v === 'number');
     this.techColorSummary = [];
     this.ecoColorSummary = [];
     const totalCount = rows.length;
-    for (let i = colorCodes.length-1; i > 0; i--) {
+    for (let i = colorCodes.length - 1; i > 0; i--) {
       const colorCode = colorCodes[i];
-      const techColorCount = rows.filter(b => colorCode === b.TechColor).length;
-      const ecoColorCount = rows.filter(b => colorCode === b.EcoColor).length;
+      const techColorCount = rows.filter((b) => colorCode === b.TechColor).length;
+      const ecoColorCount = rows.filter((b) => colorCode === b.EcoColor).length;
       let techColorPerc = 0;
       let ecoColorPerc = 0;
-      if(0 < totalCount) {
-        techColorPerc = Number((techColorCount/totalCount*100).toFixed(0));
-        ecoColorPerc = Number((ecoColorCount/totalCount*100).toFixed(0));
+      if (0 < totalCount) {
+        techColorPerc = Number(((techColorCount / totalCount) * 100).toFixed(0));
+        ecoColorPerc = Number(((ecoColorCount / totalCount) * 100).toFixed(0));
       }
-      
-      this.techColorSummary.push({ color: CBPRRow.getColor(colorCode), count:  techColorCount, perc: techColorPerc});
+
+      this.techColorSummary.push({ color: CBPRRow.getColor(colorCode), count: techColorCount, perc: techColorPerc });
       this.ecoColorSummary.push({ color: CBPRRow.getColor(colorCode), count: ecoColorCount, perc: ecoColorPerc });
     }
 
     this.availability = Number(CBPRRow.getAvailability(rows).toFixed(1));
-    this.blackRedSummary["techBlackRedCount"] = rows.filter(b => StatusColor.eBlack === b.TechColor || StatusColor.eRed === b.TechColor).length;
-    this.blackRedSummary["ecoBlackRedCount"] = rows.filter(b => StatusColor.eBlack === b.EcoColor || StatusColor.eRed === b.EcoColor).length;
+    this.blackRedSummary['techBlackRedCount'] = rows.filter(
+      (b) => StatusColor.eBlack === b.TechColor || StatusColor.eRed === b.TechColor
+    ).length;
+    this.blackRedSummary['ecoBlackRedCount'] = rows.filter(
+      (b) => StatusColor.eBlack === b.EcoColor || StatusColor.eRed === b.EcoColor
+    ).length;
     if (0 < totalCount) {
-      this.blackRedSummary["techBlackRedPerc"] = Number((this.blackRedSummary["techBlackRedCount"] / totalCount * 100).toFixed(0));
-      this.blackRedSummary["ecoBlackRedPerc"] = Number((this.blackRedSummary["ecoBlackRedCount"] / totalCount * 100).toFixed(0));
+      this.blackRedSummary['techBlackRedPerc'] = Number(((this.blackRedSummary['techBlackRedCount'] / totalCount) * 100).toFixed(0));
+      this.blackRedSummary['ecoBlackRedPerc'] = Number(((this.blackRedSummary['ecoBlackRedCount'] / totalCount) * 100).toFixed(0));
     }
   }
 
@@ -244,13 +292,13 @@ export default class BufferPenetrationReportComponent implements OnInit {
   }
 
   setColorSummaryIcon() {
-    this.colorSummaryIcon = (this.showingColorSummary)? this.closeColorSummaryIcon: this.showColorSummaryIcon;
+    this.colorSummaryIcon = this.showingColorSummary ? this.closeColorSummaryIcon : this.showColorSummaryIcon;
   }
 
   savePageSettings() {
     const settings: CBPRPageSettings = {
       ShowingColorSummary: this.showingColorSummary
-    }
+    };
     localStorage.setItem(this.settingsStorageName, JSON.stringify(settings));
   }
 
